@@ -12,5 +12,5 @@ public class Menu {
     private final int price;
     private final String imageUrl;
     private final MenuType menuType;
-    
+
 }

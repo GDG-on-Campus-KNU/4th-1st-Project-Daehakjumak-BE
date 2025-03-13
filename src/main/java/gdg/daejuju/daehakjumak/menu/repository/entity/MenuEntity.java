@@ -35,6 +35,7 @@ public class MenuEntity {
         this.price = menu.getPrice();
         this.imageUrl = menu.getImageUrl();
         this.menuType = menu.getMenuType().name();
+        this.userEntity = new UserEntity(menu.getUser());
     }
 
     public Menu toMenu(){
@@ -45,6 +46,7 @@ public class MenuEntity {
                 .price(price)
                 .imageUrl(imageUrl)
                 .menuType(MenuType.valueOf(menuType))
+                .user(userEntity.toUser())
                 .build();
     }
 }
