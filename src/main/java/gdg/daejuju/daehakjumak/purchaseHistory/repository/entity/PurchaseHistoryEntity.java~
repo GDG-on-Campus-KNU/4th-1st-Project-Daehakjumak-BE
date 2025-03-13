@@ -1,0 +1,19 @@
+package gdg.daejuju.daehakjumak.purchaseHistory.repository.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name="jumak_purchase_history")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+public class PurchaseHistoryEntity {
+    private Long id;
+    private String menu;
+    private int quantity;
+    private int price;
+}
