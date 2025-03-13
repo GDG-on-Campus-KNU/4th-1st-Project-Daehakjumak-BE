@@ -1,0 +1,2 @@
+package gdg.daejuju.daehakjumak.user.repository.jpa;public class JpaUserRepository {
+}
