@@ -23,7 +23,7 @@ public class TableEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="userId", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private UserEntity userEntity;
+    private UserEntity user;
 
     public TableEntity(gdg.daejuju.daehakjumak.table.domain.Table table){
         this.id = table.getId();
@@ -31,6 +31,7 @@ public class TableEntity {
         this.row = table.getRow();
         this.column = table.getColumn();
         this.isActive = table.isActive();
+        this.user = new UserEntity(table.getUser());
     }
 
     public gdg.daejuju.daehakjumak.table.domain.Table toTable(){
@@ -40,6 +41,7 @@ public class TableEntity {
                 .row(row)
                 .column(column)
                 .isActive(isActive)
+                .user(user.toUser())
                 .build();
     }
 }
