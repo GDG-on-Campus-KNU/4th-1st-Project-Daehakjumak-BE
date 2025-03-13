@@ -4,8 +4,6 @@ public class KakaoProperties {
     private String nickname;
     private String profileImage;
 
-    // getters, setters
-
     public String getNickname() {
         return nickname;
     }

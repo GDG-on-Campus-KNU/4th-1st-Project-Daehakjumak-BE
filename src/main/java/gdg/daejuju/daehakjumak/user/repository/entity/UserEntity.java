@@ -1,7 +1,7 @@
 package gdg.daejuju.daehakjumak.user.repository.entity;
 
 import gdg.daejuju.daehakjumak.common.repository.TimeBaseEntity;
-import gdg.daejuju.daehakjumak.user.domain.JumakInfo;
+import gdg.daejuju.daehakjumak.jumak.repository.entity.JumakEntity;
 import gdg.daejuju.daehakjumak.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,11 +25,9 @@ public class UserEntity extends TimeBaseEntity {
     private Long id;
     private String name;
     private Long kakaoId;
-    private String jumakName;
-    private int maxRow;
-    private int maxColumn;
-    private int tableCount;
-    private String qrLinkUrl;
+
+    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
+    private JumakEntity jumak;
 
     @CreatedDate
     @Column(updatable = false)
@@ -39,11 +37,7 @@ public class UserEntity extends TimeBaseEntity {
         this.id = user.getId();
         this.name = user.getName();
         this.kakaoId = user.getKakaoId();
-        this.jumakName = user.getJumakName();
-        this.maxRow = user.getMaxRow();
-        this.maxColumn = user.getMaxColumn();
-        this.tableCount = user.getTableCount();
-        this.qrLinkUrl = user.getQrLinkUrl();
+        this.jumak = new JumakEntity(user.getJumak());
     }
 
     public User toUser() {
@@ -51,7 +45,6 @@ public class UserEntity extends TimeBaseEntity {
                 .id(id)
                 .name(name)
                 .kakaoId(kakaoId)
-                .jumakInfo(new JumakInfo(jumakName,maxRow,maxColumn,tableCount,qrLinkUrl))
                 .build();
     }
 }

@@ -1,5 +1,6 @@
 package gdg.daejuju.daehakjumak.menu.repository.entity;
 
+import gdg.daejuju.daehakjumak.jumak.repository.entity.JumakEntity;
 import gdg.daejuju.daehakjumak.menu.domain.Menu;
 import gdg.daejuju.daehakjumak.menu.domain.MenuType;
 import gdg.daejuju.daehakjumak.user.repository.entity.UserEntity;
@@ -25,8 +26,8 @@ public class MenuEntity {
     private String menuType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="userId", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private UserEntity userEntity;
+    @JoinColumn(name="jumakId", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private JumakEntity jumakEntity;
 
     public MenuEntity(Menu menu){
         this.id = menu.getId();
@@ -35,7 +36,7 @@ public class MenuEntity {
         this.price = menu.getPrice();
         this.imageUrl = menu.getImageUrl();
         this.menuType = menu.getMenuType().name();
-        this.userEntity = new UserEntity(menu.getUser());
+        this.jumakEntity = new JumakEntity(menu.getJumak());
     }
 
     public Menu toMenu(){
@@ -46,7 +47,7 @@ public class MenuEntity {
                 .price(price)
                 .imageUrl(imageUrl)
                 .menuType(MenuType.valueOf(menuType))
-                .user(userEntity.toUser())
+                .jumak(jumakEntity.toJumak())
                 .build();
     }
 }

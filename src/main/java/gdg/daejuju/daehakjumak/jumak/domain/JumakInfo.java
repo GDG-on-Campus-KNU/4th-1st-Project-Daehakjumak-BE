@@ -1,4 +1,4 @@
-package gdg.daejuju.daehakjumak.user.domain;
+package gdg.daejuju.daehakjumak.jumak.domain;
 
 import lombok.Getter;
 
@@ -18,4 +18,6 @@ public class JumakInfo {
         this.tableCount = tableCount;
         this.qrLinkUrl = qrLinkUrl;
     }
+
+
 }

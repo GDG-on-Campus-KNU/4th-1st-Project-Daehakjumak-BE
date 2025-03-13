@@ -1,5 +1,6 @@
 package gdg.daejuju.daehakjumak.table.repository.entity;
 
+import gdg.daejuju.daehakjumak.jumak.repository.entity.JumakEntity;
 import gdg.daejuju.daehakjumak.user.repository.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,8 +23,8 @@ public class TableEntity {
     private boolean isActive;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="userId", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private UserEntity user;
+    @JoinColumn(name="jumakId", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private JumakEntity jumak;
 
     public TableEntity(gdg.daejuju.daehakjumak.table.domain.Table table){
         this.id = table.getId();
@@ -31,7 +32,7 @@ public class TableEntity {
         this.rowNum = table.getRow();
         this.colNum = table.getColumn();
         this.isActive = table.isActive();
-        this.user = new UserEntity(table.getUser());
+        this.jumak = new JumakEntity(table.getJumak());
     }
 
     public gdg.daejuju.daehakjumak.table.domain.Table toTable(){
@@ -41,7 +42,7 @@ public class TableEntity {
                 .row(rowNum)
                 .column(colNum)
                 .active(isActive)
-                .user(user.toUser())
+                .jumak(jumak.toJumak())
                 .build();
     }
 }
