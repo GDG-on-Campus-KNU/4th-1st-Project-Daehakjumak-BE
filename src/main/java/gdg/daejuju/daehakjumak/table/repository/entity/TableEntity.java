@@ -17,8 +17,8 @@ public class TableEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long number;
-    private int row;
-    private int column;
+    private int rowNum;
+    private int colNum;
     private boolean isActive;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,8 +28,8 @@ public class TableEntity {
     public TableEntity(gdg.daejuju.daehakjumak.table.domain.Table table){
         this.id = table.getId();
         this.number = table.getNumber();
-        this.row = table.getRow();
-        this.column = table.getColumn();
+        this.rowNum = table.getRow();
+        this.colNum = table.getColumn();
         this.isActive = table.isActive();
         this.user = new UserEntity(table.getUser());
     }
@@ -38,9 +38,9 @@ public class TableEntity {
         return gdg.daejuju.daehakjumak.table.domain.Table.builder()
                 .id(id)
                 .number(number)
-                .row(row)
-                .column(column)
-                .isActive(isActive)
+                .row(rowNum)
+                .column(colNum)
+                .active(isActive)
                 .user(user.toUser())
                 .build();
     }
