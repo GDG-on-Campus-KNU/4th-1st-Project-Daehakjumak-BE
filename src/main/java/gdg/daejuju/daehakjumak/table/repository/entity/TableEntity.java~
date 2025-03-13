@@ -25,5 +25,13 @@ public class TableEntity {
     @JoinColumn(name="userId", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private UserEntity userEntity;
 
-
+    public gdg.daejuju.daehakjumak.table.domain.Table toTable(){
+        return gdg.daejuju.daehakjumak.table.domain.Table.builder()
+                .id(id)
+                .number(number)
+                .row(row)
+                .column(column)
+                .isActive(isActive)
+                .build();
+    }
 }
