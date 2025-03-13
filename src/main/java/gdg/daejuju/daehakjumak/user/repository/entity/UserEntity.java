@@ -24,6 +24,7 @@ public class UserEntity extends TimeBaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private Long kakaoId;
     private String jumakName;
     private int maxRow;
     private int maxColumn;
@@ -37,11 +38,19 @@ public class UserEntity extends TimeBaseEntity {
     public UserEntity(User user) {
         this.id = user.getId();
         this.name = user.getName();
+        this.kakaoId = user.getKakaoId();
+        this.jumakName = user.getJumakName();
+        this.maxRow = user.getMaxRow();
+        this.maxColumn = user.getMaxColumn();
+        this.tableCount = user.getTableCount();
+        this.qrLinkUrl = user.getQrLinkUrl();
     }
 
     public User toUser() {
         return User.builder()
                 .id(id)
+                .name(name)
+                .kakaoId(kakaoId)
                 .jumakInfo(new JumakInfo(jumakName,maxRow,maxColumn,tableCount,qrLinkUrl))
                 .build();
     }
