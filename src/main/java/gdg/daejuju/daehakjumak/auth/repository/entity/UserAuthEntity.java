@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="community_user_auth")
+@Table(name="jumak_user_auth")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
