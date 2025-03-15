@@ -10,19 +10,19 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Component
-public class TokenProvider {
+public class JwtTokenProvider {
 
     private final SecretKey key;
     private static final long TOKEN_VALID_TIME = 1000L * 60 * 60; // 1시간
     private static final long REFRESH_TOKEN_VALID_TIME = 1000L * 60 * 60 * 24 * 7; // 7일
 
-    public TokenProvider(@Value("${secret-key}") String secretKey) {
+    public JwtTokenProvider(@Value("${secret-key}") String secretKey) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
     public String createToken(Long userId) {
         Claims claims = Jwts.claims()
-                .subject(userId.toString())
+                .add("userId", userId.toString())
                 .build();
         Date now = new Date();
         Date validity = new Date(now.getTime() + TOKEN_VALID_TIME);
@@ -37,7 +37,7 @@ public class TokenProvider {
 
     public String createRefreshToken(Long userId) {
         Claims claims = Jwts.claims()
-                .subject(userId.toString())
+                .add("userId", userId.toString())
                 .build();
         Date now = new Date();
         Date validity = new Date(now.getTime() + REFRESH_TOKEN_VALID_TIME);
@@ -57,7 +57,7 @@ public class TokenProvider {
                         .build()
                         .parseSignedClaims(token)
                         .getPayload()
-                        .getSubject()
+                        .get("userId", String.class)
         );
     }
 

@@ -24,8 +24,8 @@ public class JumakEntity {
     private String qrLinkUrl;
     
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="userId", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)) 
-    private UserEntity user; //연관관계의 주인
+    @JoinColumn(name="userId", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)) //연관관계의 주인
+    private UserEntity user;
 
     public JumakEntity(String jumakName, int maxRow, int maxColumn, int tableCount, String qrLinkUrl) {
         this.jumakName = jumakName;
@@ -48,4 +48,5 @@ public class JumakEntity {
                 .jumakInfo(new JumakInfo(jumakName,maxRow,maxColumn,tableCount,qrLinkUrl))
                 .build();
     }
+
 }

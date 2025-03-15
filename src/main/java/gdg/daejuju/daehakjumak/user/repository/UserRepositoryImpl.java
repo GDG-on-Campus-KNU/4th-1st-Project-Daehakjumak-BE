@@ -22,9 +22,5 @@ public class UserRepositoryImpl implements UserRepository {
         return savedEntity.toUser();
     }
 
-    @Override
-    public Optional<User> findByKakaoId(Long kakaoId) {
-        return jpaUserRepository.findByKakaoId(kakaoId).map(UserEntity::toUser);
-    }
 
 }
