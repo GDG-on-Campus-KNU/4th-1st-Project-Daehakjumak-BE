@@ -22,7 +22,7 @@ public class JwtTokenProvider {
 
     public String createToken(Long userId) {
         Claims claims = Jwts.claims()
-                .subject(userId.toString())
+                .add("userId", userId.toString())
                 .build();
         Date now = new Date();
         Date validity = new Date(now.getTime() + TOKEN_VALID_TIME);
@@ -37,7 +37,7 @@ public class JwtTokenProvider {
 
     public String createRefreshToken(Long userId) {
         Claims claims = Jwts.claims()
-                .subject(userId.toString())
+                .add("userId", userId.toString())
                 .build();
         Date now = new Date();
         Date validity = new Date(now.getTime() + REFRESH_TOKEN_VALID_TIME);
@@ -57,7 +57,7 @@ public class JwtTokenProvider {
                         .build()
                         .parseSignedClaims(token)
                         .getPayload()
-                        .getSubject()
+                        .get("userId", String.class)
         );
     }
 

@@ -3,11 +3,13 @@ package gdg.daejuju.daehakjumak.auth.repository.entity;
 import gdg.daejuju.daehakjumak.auth.repository.domain.UserAuth;
 import gdg.daejuju.daehakjumak.common.repository.TimeBaseEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 public class UserAuthEntity extends TimeBaseEntity {
 
     @Id

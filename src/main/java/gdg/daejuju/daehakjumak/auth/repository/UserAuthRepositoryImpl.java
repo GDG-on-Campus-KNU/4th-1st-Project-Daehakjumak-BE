@@ -20,11 +20,21 @@ public class UserAuthRepositoryImpl implements UserAuthRepository {
     private final UserRepository userRepository;
 
     @Override
-    @Transactional
     public UserAuth registerUser(User user, Long kakaoId) {
         User savedUser = userRepository.save(user);
         UserAuthEntity savedUserEntity = jpaUserAuthRepository.save(new UserAuthEntity(savedUser.getId(), kakaoId)); //Identity전략으로 인해 쓰기 지연은 안됨
         return savedUserEntity.toUserAuth();
+    }
+
+    @Override
+    public UserAuth loginUser(User user, Long kakaoId){
+        Optional<UserAuthEntity> findUser = jpaUserAuthRepository.findByKakaoId(kakaoId);
+        if(findUser.isEmpty()){
+            return registerUser(user,kakaoId);
+        }
+        UserAuthEntity userAuthEntity = findUser.get();
+        userAuthEntity.updateLastLoginAt(); //dirty checking
+        return userAuthEntity.toUserAuth();
     }
 
     @Override
@@ -37,16 +47,4 @@ public class UserAuthRepositoryImpl implements UserAuthRepository {
         return jpaUserAuthRepository.findById(userId).map(UserAuthEntity::toUserAuth);
     }
 
-    /* @Override
-    @Transactional
-    public UserAuth loginUser(String email, String password,String fcmToken) {
-        UserAuthEntity userAuthEntity = jpaUserAuthRepository.findByEmail(email).orElseThrow();
-        UserAuth userAuth = userAuthEntity.toUserAuth();
-        if (!userAuth.matchPassword(password)) {
-            throw new IllegalArgumentException("Invalid password");
-        }
-        userAuthEntity.updateLastLoginAt(); //dirty checking
-        jpaFcmTokenRepository.save(new FcmTokenEntity(userAuth.getUserId(),fcmToken));
-        return userAuth;
-    }*/
 }

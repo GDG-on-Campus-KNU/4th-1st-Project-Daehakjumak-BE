@@ -12,4 +12,6 @@ public interface UserAuthRepository {
 
     Optional<UserAuth> findByKakaoId(Long kakaoId);
 
+    UserAuth loginUser(User user,Long kakaoId);
+
 }
