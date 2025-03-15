@@ -24,7 +24,6 @@ public class UserEntity extends TimeBaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Long kakaoId;
 
     @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
     private JumakEntity jumak;
@@ -36,7 +35,6 @@ public class UserEntity extends TimeBaseEntity {
     public UserEntity(User user) {
         this.id = user.getId();
         this.name = user.getName();
-        this.kakaoId = user.getKakaoId();
         this.jumak = new JumakEntity(user.getJumak());
     }
 
@@ -44,7 +42,6 @@ public class UserEntity extends TimeBaseEntity {
         return User.builder()
                 .id(id)
                 .name(name)
-                .kakaoId(kakaoId)
                 .build();
     }
 }

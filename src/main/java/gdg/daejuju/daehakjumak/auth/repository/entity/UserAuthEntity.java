@@ -28,6 +28,11 @@ public class UserAuthEntity extends TimeBaseEntity {
         this.kakaoId = kakaoId;
     }
 
+    public UserAuthEntity(UserAuth userAuth) {
+        this.userId = userAuth.getUserId();
+        this.kakaoId = userAuth.getKakaoId();
+    }
+
     public UserAuth toUserAuth() {
         return new UserAuth(userId,kakaoId);
     }

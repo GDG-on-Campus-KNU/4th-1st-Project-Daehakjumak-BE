@@ -10,13 +10,13 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Component
-public class TokenProvider {
+public class JwtTokenProvider {
 
     private final SecretKey key;
     private static final long TOKEN_VALID_TIME = 1000L * 60 * 60; // 1시간
     private static final long REFRESH_TOKEN_VALID_TIME = 1000L * 60 * 60 * 24 * 7; // 7일
 
-    public TokenProvider(@Value("${secret-key}") String secretKey) {
+    public JwtTokenProvider(@Value("${secret-key}") String secretKey) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
