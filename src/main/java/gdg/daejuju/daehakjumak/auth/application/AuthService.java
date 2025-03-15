@@ -1,5 +1,6 @@
 package gdg.daejuju.daehakjumak.auth.application;
 
+import gdg.daejuju.daehakjumak.auth.application.dto.RefreshTokenRequestDto;
 import gdg.daejuju.daehakjumak.auth.application.dto.UserAccessTokenResponseDto;
 import gdg.daejuju.daehakjumak.auth.application.interfaces.UserAuthRepository;
 import gdg.daejuju.daehakjumak.auth.repository.domain.KakaoUserInfo;
@@ -24,7 +25,7 @@ public class AuthService {
 
     public UserAccessTokenResponseDto processKakaoLogin(String kakaoAccessToken) {
         // 카카오 API로 사용자 정보 요청
-        KakaoUserInfo kakaoUserInfo = getKakoUserInfo(kakaoAccessToken);
+        KakaoUserInfo kakaoUserInfo = getKakaoUserInfo(kakaoAccessToken);
 
         // 사용자 정보가 없으면 예외 발생
         if (kakaoUserInfo == null || kakaoUserInfo.getId() == null) {
@@ -43,7 +44,7 @@ public class AuthService {
         return new UserAccessTokenResponseDto(accessToken, refreshToken, jwtTokenProvider.getTokenValidTime() / 1000);
     }
 
-    private KakaoUserInfo getKakoUserInfo(String accessToken) {
+    private KakaoUserInfo getKakaoUserInfo(String accessToken) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setBearerAuth(accessToken);
@@ -60,6 +61,24 @@ public class AuthService {
         } catch (Exception e) {
             throw new RuntimeException("Failed to fetch Kakao user profile", e);
         }
+    }
+
+    public UserAccessTokenResponseDto getNewToken(RefreshTokenRequestDto dto){
+        // 리프레시 토큰 유효성 검증
+        if (!jwtTokenProvider.validateToken(dto.getRefreshToken())) {
+            throw new IllegalArgumentException("Invalid refresh token");
+        }
+
+        // 리프레시 토큰에서 사용자 ID 추출
+        Long userId = jwtTokenProvider.getUserId(dto.getRefreshToken());
+
+
+        // 새 액세스 토큰 및 리프레시 토큰 생성
+        String newAccessToken = jwtTokenProvider.createToken(userId);
+        String newRefreshToken = jwtTokenProvider.createRefreshToken(userId);
+
+        // 응답 생성
+        return new UserAccessTokenResponseDto(newAccessToken, newRefreshToken, jwtTokenProvider.getTokenValidTime() / 1000);
     }
 
 }
