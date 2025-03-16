@@ -19,7 +19,6 @@ public class KakaoUserInfo {
     public User toUser() {
         return User.builder()
                 .name(getNickname())
-                .kakaoId(id)
                 .jumak(new Jumak(null,new JumakInfo(null,5,5,0,null)))
                 .build();
     }
