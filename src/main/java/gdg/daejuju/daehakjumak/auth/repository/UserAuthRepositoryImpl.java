@@ -6,7 +6,6 @@ import gdg.daejuju.daehakjumak.auth.repository.entity.UserAuthEntity;
 import gdg.daejuju.daehakjumak.auth.repository.jpa.JpaUserAuthRepository;
 import gdg.daejuju.daehakjumak.user.application.interfaces.UserRepository;
 import gdg.daejuju.daehakjumak.user.domain.User;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -20,26 +19,21 @@ public class UserAuthRepositoryImpl implements UserAuthRepository {
     private final UserRepository userRepository;
 
     @Override
-    public UserAuth registerUser(User user, Long kakaoId) {
+    public UserAuthEntity registerUser(User user, Long kakaoId) {
         User savedUser = userRepository.save(user);
-        UserAuthEntity savedUserEntity = jpaUserAuthRepository.save(new UserAuthEntity(savedUser.getId(), kakaoId)); //Identity전략으로 인해 쓰기 지연은 안됨
-        return savedUserEntity.toUserAuth();
+        return jpaUserAuthRepository.save(new UserAuthEntity(savedUser.getId(), kakaoId,null));
     }
 
     @Override
-    public UserAuth loginUser(User user, Long kakaoId){
-        Optional<UserAuthEntity> findUser = jpaUserAuthRepository.findByKakaoId(kakaoId);
-        if(findUser.isEmpty()){
-            return registerUser(user,kakaoId);
-        }
-        UserAuthEntity userAuthEntity = findUser.get();
+    public UserAuth loginUser(UserAuthEntity userAuthEntity, String refreshToken){
         userAuthEntity.updateLastLoginAt(); //dirty checking
+        userAuthEntity.updateRefreshToken(refreshToken); //dirty checking
         return userAuthEntity.toUserAuth();
     }
 
     @Override
-    public Optional<UserAuth> findByKakaoId(Long kakaoId) {
-        return jpaUserAuthRepository.findByKakaoId(kakaoId).map(UserAuthEntity::toUserAuth);
+    public Optional<UserAuthEntity> findByKakaoId(Long kakaoId) {
+        return jpaUserAuthRepository.findByKakaoId(kakaoId);
     }
 
     @Override
@@ -47,4 +41,14 @@ public class UserAuthRepositoryImpl implements UserAuthRepository {
         return jpaUserAuthRepository.findById(userId).map(UserAuthEntity::toUserAuth);
     }
 
+    @Override
+    public void logoutUser(Long userId){
+        jpaUserAuthRepository.expireRefreshToken(userId);
+    }
+
+    @Override
+    public boolean checkRefreshTokenExpired(Long userId, String refreshToken) {
+        UserAuth userAuth = findByUserId(userId).orElseThrow();
+        return userAuth.getRefreshToken().equals(refreshToken);
+    }
 }
