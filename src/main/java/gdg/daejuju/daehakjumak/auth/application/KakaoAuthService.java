@@ -63,7 +63,7 @@ public class KakaoAuthService {
                     "https://kapi.kakao.com/v2/user/me",
                     HttpMethod.GET,
                     entity,
-                    KakaoUserInfo.class   ///문제임
+                    KakaoUserInfo.class //profile_image
             );
 
             return response.getBody();

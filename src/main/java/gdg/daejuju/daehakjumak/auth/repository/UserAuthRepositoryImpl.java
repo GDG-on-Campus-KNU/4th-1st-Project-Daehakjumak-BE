@@ -4,8 +4,10 @@ import gdg.daejuju.daehakjumak.auth.application.interfaces.UserAuthRepository;
 import gdg.daejuju.daehakjumak.auth.repository.domain.UserAuth;
 import gdg.daejuju.daehakjumak.auth.repository.entity.UserAuthEntity;
 import gdg.daejuju.daehakjumak.auth.repository.jpa.JpaUserAuthRepository;
+import gdg.daejuju.daehakjumak.jumak.repository.entity.JumakEntity;
 import gdg.daejuju.daehakjumak.user.application.interfaces.UserRepository;
 import gdg.daejuju.daehakjumak.user.domain.User;
+import gdg.daejuju.daehakjumak.user.repository.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -17,10 +19,14 @@ public class UserAuthRepositoryImpl implements UserAuthRepository {
 
     private final JpaUserAuthRepository jpaUserAuthRepository;
     private final UserRepository userRepository;
+    
 
     @Override
     public UserAuthEntity registerUser(User user, Long kakaoId) {
-        User savedUser = userRepository.save(user);
+        UserEntity savedUser = userRepository.save(user);
+        JumakEntity savedJumak = savedUser.getJumak(); //Cascade.ALL로 user persist 시 같이 persist일어났음
+        savedJumak.setUser(savedUser); //dirty Checking (UserEntity와 JumakEntity 영속성 컨텍스트 내 관리되고 있는 상태)
+
         return jpaUserAuthRepository.save(new UserAuthEntity(savedUser.getId(), kakaoId,null));
     }
 
@@ -47,8 +53,8 @@ public class UserAuthRepositoryImpl implements UserAuthRepository {
     }
 
     @Override
-    public boolean checkRefreshTokenExpired(Long userId, String refreshToken) {
+    public boolean isRefreshTokenExpired(Long userId, String refreshToken) {
         UserAuth userAuth = findByUserId(userId).orElseThrow();
-        return userAuth.getRefreshToken().equals(refreshToken);
+        return !userAuth.getRefreshToken().equals(refreshToken);
     }
 }

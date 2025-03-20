@@ -17,7 +17,7 @@ public interface UserAuthRepository {
 
     void logoutUser(Long UserId);
 
-    boolean checkRefreshTokenExpired(Long userId, String refreshToken);
+    boolean isRefreshTokenExpired(Long userId, String refreshToken);
 
 
 

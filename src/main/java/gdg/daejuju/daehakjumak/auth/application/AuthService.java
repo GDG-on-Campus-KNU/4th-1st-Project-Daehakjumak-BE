@@ -4,7 +4,6 @@ import gdg.daejuju.daehakjumak.auth.application.dto.RefreshTokenRequestDto;
 import gdg.daejuju.daehakjumak.auth.application.dto.UserAccessTokenResponseDto;
 import gdg.daejuju.daehakjumak.auth.application.interfaces.UserAuthRepository;
 import gdg.daejuju.daehakjumak.auth.repository.domain.JwtTokenProvider;
-import gdg.daejuju.daehakjumak.auth.repository.domain.UserAuth;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,7 @@ public class AuthService {
         // 리프레시 토큰에서 사용자 ID 추출
         Long userId = jwtTokenProvider.getUserId(dto.getRefreshToken());
 
-        if(userAuthRepository.checkRefreshTokenExpired(userId,refreshToken)){
+        if(userAuthRepository.isRefreshTokenExpired(userId,refreshToken)){
             throw new IllegalArgumentException("refreshToken is expired");
         }
         // 리프레시 토큰 유효성 검증

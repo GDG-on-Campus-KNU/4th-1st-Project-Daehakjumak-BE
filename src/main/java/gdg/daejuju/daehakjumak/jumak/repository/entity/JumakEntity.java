@@ -49,4 +49,10 @@ public class JumakEntity {
                 .build();
     }
 
+    public void setUser(UserEntity user){
+        this.user = user;
+        user.setJumak(this);
+    }
+
+
 }
