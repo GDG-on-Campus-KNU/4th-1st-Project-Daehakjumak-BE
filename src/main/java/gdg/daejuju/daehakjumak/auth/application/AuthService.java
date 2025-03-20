@@ -16,6 +16,7 @@ public class AuthService {
     private final UserAuthRepository userAuthRepository;
     private final KakaoAuthService kakaoAuthService;
 
+    @Transactional
     public UserAccessTokenResponseDto getNewToken(RefreshTokenRequestDto dto){
         String refreshToken = dto.getRefreshToken();
         // 리프레시 토큰에서 사용자 ID 추출
@@ -33,6 +34,8 @@ public class AuthService {
         String newAccessToken = jwtTokenProvider.createToken(userId);
         String newRefreshToken = jwtTokenProvider.createRefreshToken(userId);
 
+        // userAuthEntity에 refreshToken 정보 업데이트
+        userAuthRepository.updateRefreshToken(newRefreshToken,userId);
         // 응답 생성
         return new UserAccessTokenResponseDto(newAccessToken, newRefreshToken, jwtTokenProvider.getTokenValidTime() / 1000);
     }

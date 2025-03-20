@@ -19,6 +19,7 @@ public interface UserAuthRepository {
 
     boolean isRefreshTokenExpired(Long userId, String refreshToken);
 
+    void updateRefreshToken(String refreshToken, Long userId);
 
 
 

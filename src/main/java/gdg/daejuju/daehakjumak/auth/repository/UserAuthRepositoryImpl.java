@@ -57,4 +57,9 @@ public class UserAuthRepositoryImpl implements UserAuthRepository {
         UserAuth userAuth = findByUserId(userId).orElseThrow();
         return !userAuth.getRefreshToken().equals(refreshToken);
     }
+
+    @Override
+    public void updateRefreshToken(String refreshToken, Long userId) {
+        jpaUserAuthRepository.updateRefreshToken(refreshToken,userId);
+    }
 }
