@@ -6,6 +6,6 @@ import gdg.daejuju.daehakjumak.user.repository.entity.UserEntity;
 import java.util.Optional;
 
 public interface UserRepository {
-    User save(User user);
+    UserEntity save(User user);
 
 }

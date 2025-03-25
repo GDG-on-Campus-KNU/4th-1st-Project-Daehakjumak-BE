@@ -44,6 +44,11 @@ public class UserEntity extends TimeBaseEntity {
         return User.builder()
                 .id(id)
                 .name(name)
+                .jumak(jumak.toJumak())
                 .build();
+    }
+
+    public void setJumak(JumakEntity jumak){
+        this.jumak = jumak;
     }
 }

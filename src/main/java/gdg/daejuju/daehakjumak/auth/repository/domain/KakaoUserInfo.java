@@ -19,8 +19,9 @@ public class KakaoUserInfo {
     public User toUser() {
         return User.builder()
                 .name(getNickname())
-                .jumak(new Jumak(null,new JumakInfo(null,5,5,0,null)))
+                .jumak(new Jumak(null,new JumakInfo(null,5,5,0,null), null))
                 .build();
+
     }
 
     public String getNickname(){

@@ -11,13 +11,14 @@ public class User {
 
     private final Long id;
     private final String name;
-    private final Jumak jumak;
+    private Jumak jumak;
 
     public User(Long id, String name, Jumak jumak) {
         this.id = id;
         this.name = name;
         this.jumak = jumak;
     }
+
 }
 
 
