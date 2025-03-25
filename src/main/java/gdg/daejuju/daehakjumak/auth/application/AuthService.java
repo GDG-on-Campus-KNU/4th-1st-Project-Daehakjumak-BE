@@ -4,9 +4,9 @@ import gdg.daejuju.daehakjumak.auth.application.dto.RefreshTokenRequestDto;
 import gdg.daejuju.daehakjumak.auth.application.dto.UserAccessTokenResponseDto;
 import gdg.daejuju.daehakjumak.auth.application.interfaces.UserAuthRepository;
 import gdg.daejuju.daehakjumak.auth.repository.domain.JwtTokenProvider;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor

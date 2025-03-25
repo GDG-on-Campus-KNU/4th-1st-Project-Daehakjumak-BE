@@ -9,10 +9,10 @@ import lombok.Getter;
 public class Waiting {
     private Long id;
     private int nop;
-    private int phoneNum;
+    private String phoneNum;
     private Jumak jumak;
 
-    public Waiting(Long id, int nop, int phoneNum, Jumak jumak) {
+    public Waiting(Long id, int nop, String phoneNum, Jumak jumak) {
         this.id = id;
         this.nop = nop;
         this.phoneNum = phoneNum;
