@@ -5,10 +5,7 @@ import gdg.daejuju.daehakjumak.common.ui.Response;
 import gdg.daejuju.daehakjumak.table.application.TableService;
 import gdg.daejuju.daehakjumak.table.application.dto.request.CreateTableRequestDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/table")
@@ -21,4 +18,11 @@ public class TableController {
     public Response<String> createTable(@RequestBody CreateTableRequestDto createTableRequestDto){
         return tableService.createTable(createTableRequestDto);
     }
+
+    @DeleteMapping("{tableId}")
+    public Response<String> deleteTable(@PathVariable Long tableId){
+        return tableService.deleteTable(tableId);
+    }
+
+
 }

@@ -4,6 +4,7 @@ package gdg.daejuju.daehakjumak.table.application;
 import gdg.daejuju.daehakjumak.common.ui.Response;
 import gdg.daejuju.daehakjumak.jumak.application.interfaces.JumakRepository;
 import gdg.daejuju.daehakjumak.jumak.domain.Jumak;
+import gdg.daejuju.daehakjumak.jumak.repository.JumakRepositoryImpl;
 import gdg.daejuju.daehakjumak.table.application.interfaces.TableRepository;
 import gdg.daejuju.daehakjumak.table.domain.Table;
 import gdg.daejuju.daehakjumak.table.application.dto.request.CreateTableRequestDto;
@@ -17,17 +18,24 @@ import org.springframework.transaction.annotation.Transactional;
 public class TableService {
 
     private final TableRepository tableRepository;
-    private final JumakRepository jumakRepository;
+    private final JumakRepositoryImpl jumakRepository;
 
     // 테이블 생성
     @Transactional
     public Response<String> createTable(CreateTableRequestDto request){
-        Jumak jumak = jumakRepository.findById(request.getJumak())
-                .orElseThrow(() -> new IllegalArgumentException("해당 주막이 존재하지 않습니다.")).toJumak();
+        Jumak jumak = jumakRepository.findById(request.getJumak());
         Table table = new Table(null, request.getNumber(), request.getRow(), request.getColumn(), request.isActive(), jumak);
 
         tableRepository.save(new TableEntity(table));
-        return Response.ok("테이블 생성 성공");
+        return Response.ok("Create Table success");
+    }
+
+    // 테이블 삭제
+    @Transactional
+    public Response<String> deleteTable(Long tableId){
+        tableRepository.deleteById(tableId);
+
+        return Response.ok("Delete Table success");
     }
 
 
