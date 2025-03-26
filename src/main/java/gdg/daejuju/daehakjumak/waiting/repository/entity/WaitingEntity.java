@@ -19,7 +19,7 @@ public class WaitingEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int nop;
-    private int phoneNum;
+    private String phoneNum;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="jumakId", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
@@ -39,5 +39,12 @@ public class WaitingEntity {
                 .phoneNum(phoneNum)
                 .jumak(jumak.toJumak())
                 .build();
+    }
+
+    public void updateNop(int nop){
+        this.nop = nop;
+    }
+    public void updatePhoneNum(String phoneNum){
+        this.phoneNum = phoneNum;
     }
 }

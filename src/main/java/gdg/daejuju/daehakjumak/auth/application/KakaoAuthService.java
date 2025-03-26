@@ -1,23 +1,19 @@
 package gdg.daejuju.daehakjumak.auth.application;
 
-import gdg.daejuju.daehakjumak.auth.application.dto.RefreshTokenRequestDto;
 import gdg.daejuju.daehakjumak.auth.application.dto.UserAccessTokenResponseDto;
 import gdg.daejuju.daehakjumak.auth.application.interfaces.UserAuthRepository;
+import gdg.daejuju.daehakjumak.auth.repository.domain.JwtTokenProvider;
 import gdg.daejuju.daehakjumak.auth.repository.domain.KakaoUserInfo;
 import gdg.daejuju.daehakjumak.auth.repository.domain.UserAuth;
 import gdg.daejuju.daehakjumak.auth.repository.entity.UserAuthEntity;
-import gdg.daejuju.daehakjumak.user.domain.User;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import gdg.daejuju.daehakjumak.auth.repository.domain.JwtTokenProvider;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
