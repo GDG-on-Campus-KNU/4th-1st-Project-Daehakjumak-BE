@@ -34,7 +34,7 @@ public class WaitingRepositoryImpl implements WaitingRepository {
 
     @Override
     public List<Waiting> getWaitingList(Long jumakId) {
-        return jpaWaitingRepository.findAllByJumakId(jumakId).stream().map(WaitingEntity::toWaiting).toList();
+        return jpaWaitingRepository.findAllByJumak_Id(jumakId).stream().map(WaitingEntity::toWaiting).toList();
     }
 
     @Override

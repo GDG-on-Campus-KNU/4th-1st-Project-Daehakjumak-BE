@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface JpaWaitingRepository extends JpaRepository<WaitingEntity,Long> {
-    List<WaitingEntity> findAllByJumakId(Long jumakId);
+    List<WaitingEntity> findAllByJumak_Id(Long jumakId);
 }

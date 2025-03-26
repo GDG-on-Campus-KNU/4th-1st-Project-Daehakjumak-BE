@@ -1,7 +1,9 @@
 package gdg.daejuju.daehakjumak.waiting.application.dto;
 
 import gdg.daejuju.daehakjumak.waiting.domain.Waiting;
+import lombok.Getter;
 
+@Getter
 public class GetWaitingResponseDto {
     Long id;
     int nop;
