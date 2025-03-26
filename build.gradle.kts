@@ -51,6 +51,10 @@ dependencies {
 	//SMS
 	implementation("net.nurigo:sdk:4.3.2")
 
+	//DynamoDB
+	implementation("software.amazon.awssdk:dynamodb-enhanced:2.20.26")
+	implementation("software.amazon.awssdk:dynamodb:2.20.26")
+
 	//test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
