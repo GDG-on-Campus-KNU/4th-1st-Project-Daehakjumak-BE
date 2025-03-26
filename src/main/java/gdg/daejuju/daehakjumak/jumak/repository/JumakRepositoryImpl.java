@@ -4,6 +4,7 @@ import gdg.daejuju.daehakjumak.jumak.application.interfaces.JumakRepository;
 import gdg.daejuju.daehakjumak.jumak.domain.Jumak;
 import gdg.daejuju.daehakjumak.jumak.repository.entity.JumakEntity;
 import gdg.daejuju.daehakjumak.jumak.repository.jpa.JpaJumakRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -22,5 +23,11 @@ public class JumakRepositoryImpl implements JumakRepository {
     @Override
     public Jumak findById(Long id) {
         return jpaJumakRepository.findById(id).map(JumakEntity::toJumak).orElseThrow(() -> new IllegalArgumentException("Jumak not found"));
+    }
+
+    @Override
+    @Transactional
+    public void updateJumakName(Long id, String jumakName) {
+        jpaJumakRepository.updateJumakName(id,jumakName);
     }
 }
