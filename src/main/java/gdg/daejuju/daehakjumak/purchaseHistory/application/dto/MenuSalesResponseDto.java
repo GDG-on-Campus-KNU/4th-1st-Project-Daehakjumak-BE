@@ -1,5 +1,10 @@
 package gdg.daejuju.daehakjumak.purchaseHistory.application.dto;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
 public class MenuSalesResponseDto {
     private String menu;
     private long totalSales;

@@ -4,6 +4,7 @@ import gdg.daejuju.daehakjumak.common.repository.TimeBaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
@@ -26,7 +27,7 @@ public class PurchaseHistoryEntity {
     private LocalDateTime regDt;
 
     public PurchaseHistoryEntity(String menu, int quantity, int price, Long jumakId) {
-        this.id = UUID.randomUUID().toString(); // ID 자동 생성
+        this.id = UUID.randomUUID().toString();
         this.menu = menu;
         this.quantity = quantity;
         this.price = price;
@@ -40,13 +41,24 @@ public class PurchaseHistoryEntity {
     }
 
     @DynamoDbSortKey
-    public long getRegDt() { // DynamoDB 저장 시 long (Epoch Time)으로 변환
+    @DynamoDbAttribute("regDt")
+    public Long getRegDt() { // Epoch Time으로 변환된 regDt 반환
         return regDt.toEpochSecond(ZoneOffset.UTC);
     }
 
-
-    public long getTotalPrice(){
-        return (long) price *quantity;
+    public void setRegDt(Long epochTime) { // DynamoDB에서 불러올 때
+        this.regDt = LocalDateTime.ofEpochSecond(epochTime, 0, ZoneOffset.UTC);
     }
 
+    public LocalDateTime getOriginRegDt() {
+        return regDt;
+    }
+
+    public void setOriginRegDt(LocalDateTime regDt) {
+        this.regDt = regDt;
+    }
+
+    public long getTotalPrice(){
+        return (long) price * quantity;
+    }
 }

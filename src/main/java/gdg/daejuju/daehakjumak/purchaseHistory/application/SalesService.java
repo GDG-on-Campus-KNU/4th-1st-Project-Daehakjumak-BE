@@ -3,6 +3,7 @@ package gdg.daejuju.daehakjumak.purchaseHistory.application;
 import gdg.daejuju.daehakjumak.purchaseHistory.application.dto.MenuSalesResponseDto;
 import gdg.daejuju.daehakjumak.purchaseHistory.application.dto.TotalSalesRequestDto;
 import gdg.daejuju.daehakjumak.purchaseHistory.repository.entity.PurchaseHistoryEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
@@ -16,17 +17,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class SalesService {
-    private final DynamoDbEnhancedClient dynamoDbEnhancedClient;
     private final DynamoDbTable<PurchaseHistoryEntity> purchaseHistoryTable;
-
-    public SalesService(DynamoDbEnhancedClient dynamoDbEnhancedClient) {
-        this.dynamoDbEnhancedClient = dynamoDbEnhancedClient;
-        this.purchaseHistoryTable = dynamoDbEnhancedClient.table(
-                "PurchaseHistory",
-                TableSchema.fromBean(PurchaseHistoryEntity.class)
-        );
-    }
 
     public long calculateTotalSalesByPeriod(TotalSalesRequestDto dto) {
         Long jumakId = dto.getJumakId();
@@ -69,5 +62,18 @@ public class SalesService {
                 .stream()
                 .map(entry -> new MenuSalesResponseDto(entry.getKey(), entry.getValue()))
                 .toList();
+    }
+
+    public List<PurchaseHistoryEntity> getPurchaseHistoryByJumakId(Long jumakId) {
+        QueryConditional queryConditional = QueryConditional.keyEqualTo(
+                Key.builder()
+                        .partitionValue(jumakId)
+                        .build()
+        );
+
+        return purchaseHistoryTable.query(queryConditional)
+                .items()
+                .stream()
+                .collect(Collectors.toList());
     }
 }

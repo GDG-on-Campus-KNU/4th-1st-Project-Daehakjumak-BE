@@ -1,33 +1,29 @@
 package gdg.daejuju.daehakjumak.purchaseHistory.application;
 
+import gdg.daejuju.daehakjumak.purchaseHistory.application.dto.CreatePurchaseHistoryReqDto;
 import gdg.daejuju.daehakjumak.purchaseHistory.repository.entity.PurchaseHistoryEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
-import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 
 @Service
+@RequiredArgsConstructor
 public class PurchaseHistoryService {
-    private final DynamoDbEnhancedClient dynamoDbEnhancedClient;
     private final DynamoDbTable<PurchaseHistoryEntity> purchaseHistoryTable;
 
-    public PurchaseHistoryService(DynamoDbEnhancedClient dynamoDbEnhancedClient) {
-        this.dynamoDbEnhancedClient = dynamoDbEnhancedClient;
-        this.purchaseHistoryTable = dynamoDbEnhancedClient.table(
-                "PurchaseHistory",
-                TableSchema.fromBean(PurchaseHistoryEntity.class)
+
+    public String savePurchaseHistory(CreatePurchaseHistoryReqDto dto) {
+        PurchaseHistoryEntity entity = dto.getEntity();
+        purchaseHistoryTable.putItem(entity);
+        return entity.getId();
+    }
+
+    public PurchaseHistoryEntity getPurchaseHistory(Long jumakId, Long regDt) {
+        return purchaseHistoryTable.getItem(r -> r
+                .key(k -> k
+                        .partitionValue(jumakId)
+                        .sortValue(regDt)
+                )
         );
-    }
-
-    public void savePurchaseHistory(PurchaseHistoryEntity purchaseHistory) {
-        purchaseHistoryTable.putItem(purchaseHistory);
-    }
-
-    public PurchaseHistoryEntity getPurchaseHistory(String id) {
-        return purchaseHistoryTable.getItem(r -> r.key(k -> k.partitionValue(id)));
-    }
-
-    public void deletePurchaseHistory(String id) {
-        purchaseHistoryTable.deleteItem(r -> r.key(k -> k.partitionValue(id)));
     }
 }
