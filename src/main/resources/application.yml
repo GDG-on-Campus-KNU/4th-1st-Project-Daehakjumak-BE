@@ -18,6 +18,14 @@ spring:
         format_sql: true
     open-in-view: false
 
+aws:
+  dynamodb:
+    region: ap-northeast-2
+    endpoint: https://dynamodb.ap-northeast-2.amazonaws.com
+  credentials:
+    accessKey: ${AWS_ACCESS_KEY}
+    secretKey: ${AWS_SECRET_KEY}
+
 
 
 
