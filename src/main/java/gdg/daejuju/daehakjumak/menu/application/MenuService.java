@@ -6,9 +6,13 @@ import gdg.daejuju.daehakjumak.jumak.domain.Jumak;
 import gdg.daejuju.daehakjumak.menu.application.interfaces.MenuRepository;
 import gdg.daejuju.daehakjumak.menu.domain.Menu;
 import gdg.daejuju.daehakjumak.menu.domain.dto.request.CreateMenuRequestDto;
+import gdg.daejuju.daehakjumak.menu.domain.dto.request.ModifyMenuDescriptionRequestDto;
+import gdg.daejuju.daehakjumak.menu.domain.dto.request.ModifyMenuNameRequestDto;
+import gdg.daejuju.daehakjumak.menu.domain.dto.request.ModifyMenuPriceRequestDto;
 import gdg.daejuju.daehakjumak.menu.repository.entity.MenuEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +22,7 @@ public class MenuService {
     private final JumakRepository jumakRepository;
 
     // 메뉴 생성
+    @Transactional
     public Response<String> createMenu(CreateMenuRequestDto requestDto){
 
         Jumak jumak = jumakRepository.findById(requestDto.getJumak());
@@ -30,10 +35,44 @@ public class MenuService {
     }
 
     // 메뉴 삭제
+    @Transactional
     public Response<String> deleteMenu(Long menuId){
 
         menuRepository.deleteById(menuId);
 
         return Response.ok("Delete Menu Success.");
+    }
+
+    // 메뉴 이름 수정
+    @Transactional
+    public Response<String> modifyName(Long menuId, ModifyMenuNameRequestDto requestDto){
+        MenuEntity menu = menuRepository.findById(menuId)
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 메뉴입니다."));
+
+        menu.setName(requestDto.getName());
+
+        return Response.ok("Modify menu name success.");
+    }
+
+    // 메뉴 가격 수정
+    @Transactional
+    public Response<String> modifyPrice(Long menuId, ModifyMenuPriceRequestDto requestDto){
+        MenuEntity menu = menuRepository.findById(menuId)
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 메뉴입니다."));
+
+        menu.setPrice(requestDto.getPrice());
+
+        return Response.ok("Modify menu Price success.");
+    }
+
+    // 메뉴 설명 수정
+    @Transactional
+    public Response<String> modifyDescription(Long menuId, ModifyMenuDescriptionRequestDto requestDto){
+        MenuEntity menu = menuRepository.findById(menuId)
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 메뉴입니다."));
+
+        menu.setDescription(requestDto.getDescription());
+
+        return Response.ok("Modify menu Description success.");
     }
 }
