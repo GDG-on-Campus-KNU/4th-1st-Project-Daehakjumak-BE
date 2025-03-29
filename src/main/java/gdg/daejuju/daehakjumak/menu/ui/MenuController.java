@@ -6,8 +6,11 @@ import gdg.daejuju.daehakjumak.menu.domain.dto.request.CreateMenuRequestDto;
 import gdg.daejuju.daehakjumak.menu.domain.dto.request.ModifyMenuDescriptionRequestDto;
 import gdg.daejuju.daehakjumak.menu.domain.dto.request.ModifyMenuNameRequestDto;
 import gdg.daejuju.daehakjumak.menu.domain.dto.request.ModifyMenuPriceRequestDto;
+import gdg.daejuju.daehakjumak.menu.domain.dto.response.GetAllMenuResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/menu")
@@ -41,5 +44,8 @@ public class MenuController {
         return menuService.modifyDescription(menuId, requestDto);
     }
 
-
+    @GetMapping("/{jumakId}")
+    public Response<List<GetAllMenuResponseDto>> getAllMenu(@PathVariable Long jumakId){
+        return menuService.getAllMenu(jumakId);
+    }
 }

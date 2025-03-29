@@ -5,14 +5,19 @@ import gdg.daejuju.daehakjumak.jumak.application.interfaces.JumakRepository;
 import gdg.daejuju.daehakjumak.jumak.domain.Jumak;
 import gdg.daejuju.daehakjumak.menu.application.interfaces.MenuRepository;
 import gdg.daejuju.daehakjumak.menu.domain.Menu;
+import gdg.daejuju.daehakjumak.menu.domain.MenuType;
 import gdg.daejuju.daehakjumak.menu.domain.dto.request.CreateMenuRequestDto;
 import gdg.daejuju.daehakjumak.menu.domain.dto.request.ModifyMenuDescriptionRequestDto;
 import gdg.daejuju.daehakjumak.menu.domain.dto.request.ModifyMenuNameRequestDto;
 import gdg.daejuju.daehakjumak.menu.domain.dto.request.ModifyMenuPriceRequestDto;
+import gdg.daejuju.daehakjumak.menu.domain.dto.response.GetAllMenuResponseDto;
 import gdg.daejuju.daehakjumak.menu.repository.entity.MenuEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -74,5 +79,22 @@ public class MenuService {
         menu.setDescription(requestDto.getDescription());
 
         return Response.ok("Modify menu Description success.");
+    }
+
+    //모든 메뉴 불러오기
+    @Transactional
+    public Response<List<GetAllMenuResponseDto>> getAllMenu(Long jumakId){
+
+        List<GetAllMenuResponseDto> list = menuRepository.findAllByJumakEntity_Id(jumakId)
+                .stream()
+                .map(menuEntity -> new GetAllMenuResponseDto(
+                        menuEntity.getName(),
+                        menuEntity.getDescription(),
+                        menuEntity.getPrice(),
+                        MenuType.valueOf(menuEntity.getMenuType())
+                ))
+                .collect(Collectors.toList());
+
+        return Response.ok(list);
     }
 }
