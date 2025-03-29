@@ -4,6 +4,7 @@ import gdg.daejuju.daehakjumak.jumak.domain.Jumak;
 import gdg.daejuju.daehakjumak.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Builder
 @Getter

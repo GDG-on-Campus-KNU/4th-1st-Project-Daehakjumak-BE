@@ -6,12 +6,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name="jumak_table")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 public class TableEntity {
 
     @Id

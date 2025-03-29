@@ -5,6 +5,7 @@ import gdg.daejuju.daehakjumak.common.ui.Response;
 import gdg.daejuju.daehakjumak.jumak.application.interfaces.JumakRepository;
 import gdg.daejuju.daehakjumak.jumak.domain.Jumak;
 import gdg.daejuju.daehakjumak.jumak.repository.JumakRepositoryImpl;
+import gdg.daejuju.daehakjumak.table.application.dto.request.ModifyTableStatusRequestDto;
 import gdg.daejuju.daehakjumak.table.application.interfaces.TableRepository;
 import gdg.daejuju.daehakjumak.table.domain.Table;
 import gdg.daejuju.daehakjumak.table.application.dto.request.CreateTableRequestDto;
@@ -36,6 +37,17 @@ public class TableService {
         tableRepository.deleteById(tableId);
 
         return Response.ok("Delete Table success");
+    }
+
+    // 테이블 활성화 상태 수정
+    @Transactional
+    public Response<String> modifyStatus(Long tableId, ModifyTableStatusRequestDto requestDto){
+        TableEntity table = tableRepository.findById(tableId)
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 테이블 번호입니다."));
+
+        table.setActive(requestDto.isStatus());
+
+        return Response.ok("Modify Table Status");
     }
 
 

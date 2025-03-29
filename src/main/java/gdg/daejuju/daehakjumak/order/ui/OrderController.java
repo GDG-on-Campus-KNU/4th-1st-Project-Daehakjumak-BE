@@ -20,4 +20,10 @@ public class OrderController {
     public Response<String> createOrder(@PathVariable Long tableId, @RequestBody CreateOrderRequestDto requestDto){
         return orderService.createOrder(tableId, requestDto);
     }
+
+    // 테이블 주문 삭제
+    @DeleteMapping("{orderId}")
+    public Response<String> deleteOrder(@PathVariable Long orderId){
+        return orderService.deleteOrder(orderId);
+    }
 }

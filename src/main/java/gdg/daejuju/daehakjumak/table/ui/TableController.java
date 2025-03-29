@@ -4,6 +4,7 @@ package gdg.daejuju.daehakjumak.table.ui;
 import gdg.daejuju.daehakjumak.common.ui.Response;
 import gdg.daejuju.daehakjumak.table.application.TableService;
 import gdg.daejuju.daehakjumak.table.application.dto.request.CreateTableRequestDto;
+import gdg.daejuju.daehakjumak.table.application.dto.request.ModifyTableStatusRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,5 +25,9 @@ public class TableController {
         return tableService.deleteTable(tableId);
     }
 
+    @PutMapping("{tableId}")
+    public Response<String> modifyStatus(@PathVariable Long tableId, @RequestBody ModifyTableStatusRequestDto requestDto){
+        return tableService.modifyStatus(tableId, requestDto);
+    }
 
 }
