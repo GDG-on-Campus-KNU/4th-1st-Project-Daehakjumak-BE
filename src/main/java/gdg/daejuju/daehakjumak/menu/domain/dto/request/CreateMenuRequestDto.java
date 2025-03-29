@@ -8,9 +8,6 @@ public class CreateMenuRequestDto {
     private String name;
     private String description;
     private int price;
-
-    // test
-    private String imageUrl;
     private MenuType menuType;
     private Long jumak;
 }
