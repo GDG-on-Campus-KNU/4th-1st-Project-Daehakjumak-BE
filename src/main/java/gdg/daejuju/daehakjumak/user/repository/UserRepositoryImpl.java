@@ -21,5 +21,8 @@ public class UserRepositoryImpl implements UserRepository {
         return jpaUserRepository.save(userEntity);
     }
 
-
+    @Override
+    public User findById(Long userId) {
+        return jpaUserRepository.findById(userId).map(UserEntity::toUser).orElseThrow(()->new IllegalArgumentException("User not found"));
+    }
 }

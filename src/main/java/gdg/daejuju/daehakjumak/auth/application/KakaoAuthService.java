@@ -69,7 +69,6 @@ public class KakaoAuthService {
     }
 
     public void kakaoLogout(String kakaoAccessToken) {
-        RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + kakaoAccessToken);
 

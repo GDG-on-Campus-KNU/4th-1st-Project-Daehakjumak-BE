@@ -16,6 +16,7 @@ public class SalesController {
 
     private final SalesService salesService;
 
+
     @PostMapping("/total")
     public Response<Long> getTotalSales(@RequestBody TotalSalesRequestDto dto) {
         long totalSales = salesService.calculateTotalSalesByPeriod(dto);

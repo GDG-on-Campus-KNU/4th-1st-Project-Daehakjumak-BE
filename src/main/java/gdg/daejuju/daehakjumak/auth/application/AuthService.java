@@ -4,6 +4,8 @@ import gdg.daejuju.daehakjumak.auth.application.dto.RefreshTokenRequestDto;
 import gdg.daejuju.daehakjumak.auth.application.dto.UserAccessTokenResponseDto;
 import gdg.daejuju.daehakjumak.auth.application.interfaces.UserAuthRepository;
 import gdg.daejuju.daehakjumak.auth.repository.domain.JwtTokenProvider;
+import gdg.daejuju.daehakjumak.user.application.interfaces.UserRepository;
+import gdg.daejuju.daehakjumak.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,7 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserAuthRepository userAuthRepository;
     private final KakaoAuthService kakaoAuthService;
+    private final UserRepository userRepository;
 
     @Transactional
     public UserAccessTokenResponseDto getNewToken(RefreshTokenRequestDto dto){
@@ -51,6 +54,14 @@ public class AuthService {
         // Refresh Token 삭제
         userAuthRepository.logoutUser(userId); //dirty checking
 
+    }
+
+    public boolean isUserAuthorizedForJumak(Long userId, Long jumakId) {
+        // 사용자의 jumak 정보 조회
+        User user = userRepository.findById(userId);
+
+        // 사용자와 연결된 jumakId와 요청된 jumakId 비교
+        return user.getJumak().getId().equals(jumakId);
     }
 
 

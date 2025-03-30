@@ -5,6 +5,7 @@ import gdg.daejuju.daehakjumak.waiting.application.WaitingService;
 import gdg.daejuju.daehakjumak.waiting.application.dto.CreateWaitingRequestDto;
 import gdg.daejuju.daehakjumak.waiting.application.dto.GetWaitingResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,12 +17,14 @@ public class WaitingController {
 
     private final WaitingService waitingService;
 
+    @PreAuthorize("hasPermission(#waitingId, 'Waiting', null)")
     @PatchMapping("/{waitingId}/nop")
     public Response<Void> updateNop(@PathVariable("waitingId") Long waitingId, @RequestParam("nop") int nop) {
         waitingService.updateNop(waitingId,nop);
         return Response.ok(null);
     }
 
+    @PreAuthorize("hasPermission(#waitingId, 'Waiting', null)")
     @PatchMapping("/{waitingId}/phoneNum")
     public Response<Void> updatePhoneNum(@PathVariable("waitingId") Long waitingId, @RequestParam("phoneNum") String phoneNum) {
         waitingService.updatePhoneNum(waitingId,phoneNum);
@@ -34,12 +37,14 @@ public class WaitingController {
         return Response.ok(id);
     }
 
+    @PreAuthorize("hasPermission(#waitingId, 'Waiting', null)")
     @DeleteMapping("/{waitingId}")
     public Response<Void> deleteWaiting(@PathVariable("waitingId") Long waitingId) {
         waitingService.deleteWaiting(waitingId);
         return Response.ok(null);
     }
 
+    @PreAuthorize("hasPermission(#jumakId, 'Jumak', null)")
     @GetMapping
     public Response<List<GetWaitingResponseDto>> getWaitingList(@RequestParam("jumakId") Long jumakId) {
         List<GetWaitingResponseDto> waitingList = waitingService.getWaitingList(jumakId);

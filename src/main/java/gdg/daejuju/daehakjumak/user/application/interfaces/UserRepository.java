@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface UserRepository {
     UserEntity save(User user);
 
+    User findById(Long userId);
+
 }

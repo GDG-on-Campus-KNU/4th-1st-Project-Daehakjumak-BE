@@ -30,4 +30,9 @@ public class JumakRepositoryImpl implements JumakRepository {
     public void updateJumakName(Long id, String jumakName) {
         jpaJumakRepository.updateJumakName(id,jumakName);
     }
+
+    @Override
+    public boolean isAcessibleByUser(Long jumakId, String userId) {
+        return jpaJumakRepository.existsByIdAndUserId(jumakId, userId);
+    }
 }

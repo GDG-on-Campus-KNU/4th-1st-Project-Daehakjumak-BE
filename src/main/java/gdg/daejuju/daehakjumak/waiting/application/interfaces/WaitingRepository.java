@@ -13,4 +13,6 @@ public interface WaitingRepository {
 
     void updateNop(Long id, int nop);
     void updatePhoneNum(Long id, String phoneNum);
+
+    boolean isAccesibleByUser(Long waitingId, String userId);
 }
