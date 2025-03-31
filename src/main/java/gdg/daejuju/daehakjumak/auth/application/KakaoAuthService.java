@@ -11,6 +11,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -22,6 +24,7 @@ public class KakaoAuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RestTemplate restTemplate;
     private final UserAuthRepository userAuthRepository;
+    private final UserDetailsService userDetailsService;
 
     @Transactional
     public UserAccessTokenResponseDto processKakaoLogin(String kakaoAccessToken) {
@@ -40,7 +43,8 @@ public class KakaoAuthService {
                 .orElseGet(() -> userAuthRepository.registerUser(kakaoUserInfo.toUser(),kakaoId));
 
         // 토큰 생성
-        String accessToken = jwtTokenProvider.createToken(userAuthEntity.getUserId());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userAuthEntity.getUserId().toString());
+        String accessToken = jwtTokenProvider.createToken(userDetails, userAuthEntity.getUserId());
         String refreshToken = jwtTokenProvider.createRefreshToken(userAuthEntity.getUserId());
 
         //로그인 처리
@@ -69,7 +73,6 @@ public class KakaoAuthService {
     }
 
     public void kakaoLogout(String kakaoAccessToken) {
-        RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + kakaoAccessToken);
 

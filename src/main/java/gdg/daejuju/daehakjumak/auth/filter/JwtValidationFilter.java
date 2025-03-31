@@ -36,14 +36,8 @@ public class JwtValidationFilter extends OncePerRequestFilter {
         String token = resolveToken(request);
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
-            Long userId = jwtTokenProvider.getUserId(token);
-
-            // 사용자 권한 설정
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userId.toString());
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
+            //여기서 loadByUsername으로 DB 조회하지 않게 하기 위해 accessToken내부에 authoritiesd와 같은 정보 포함하여 성능 최적화
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 

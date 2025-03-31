@@ -4,10 +4,18 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
 import javax.crypto.SecretKey;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenProvider {
@@ -20,14 +28,19 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
-    public String createToken(Long userId) {
+    public String createToken(UserDetails userDetails, Long userId) {
         Claims claims = Jwts.claims()
-                .add("userId", userId.toString())
+                .add("username", userDetails.getUsername())
+                .add("authorities", userDetails.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList()))
                 .build();
+
         Date now = new Date();
         Date validity = new Date(now.getTime() + TOKEN_VALID_TIME);
 
         return Jwts.builder()
+                .subject(userId.toString()) // userId를 subject로 설정
                 .claims(claims)
                 .issuedAt(now)
                 .expiration(validity)
@@ -36,18 +49,35 @@ public class JwtTokenProvider {
     }
 
     public String createRefreshToken(Long userId) {
-        Claims claims = Jwts.claims()
-                .add("userId", userId.toString())
-                .build();
         Date now = new Date();
         Date validity = new Date(now.getTime() + REFRESH_TOKEN_VALID_TIME);
 
         return Jwts.builder()
-                .claims(claims)
+                .subject(userId.toString()) // userId를 subject로 설정
                 .issuedAt(now)
                 .expiration(validity)
                 .signWith(key)
                 .compact();
+    }
+
+    public Authentication getAuthentication(String token) {
+        Claims claims = Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        Long userId = Long.parseLong(claims.getSubject());
+        String username = claims.get("username", String.class);
+        List<String> authorities = claims.get("authorities", List.class);
+
+        List<GrantedAuthority> grantedAuthorities = authorities.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+
+        UserDetails userDetails = new User(userId.toString(), "", grantedAuthorities);
+
+        return new UsernamePasswordAuthenticationToken(userDetails, null, grantedAuthorities);
     }
 
     public Long getUserId(String token) {
@@ -57,7 +87,7 @@ public class JwtTokenProvider {
                         .build()
                         .parseSignedClaims(token)
                         .getPayload()
-                        .get("userId", String.class)
+                        .getSubject()
         );
     }
 
