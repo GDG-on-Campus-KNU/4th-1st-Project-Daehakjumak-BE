@@ -57,6 +57,10 @@ dependencies {
 	implementation("software.amazon.awssdk:dynamodb-enhanced:2.20.26")
 	implementation("software.amazon.awssdk:dynamodb:2.20.26")
 
+	//s3
+	implementation("software.amazon.awssdk:s3:2.20.86")
+	implementation("software.amazon.awssdk:auth:2.20.86")
+
 	//test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
