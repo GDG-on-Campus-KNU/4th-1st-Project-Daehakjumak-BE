@@ -35,6 +35,7 @@ public class WaitingRepositoryImpl implements WaitingRepository {
     @Override
     public List<Waiting> getWaitingList(Long jumakId) {
         return jpaWaitingRepository.findAllByJumak_Id(jumakId).stream().map(WaitingEntity::toWaiting).toList();
+        //toWaiting시 내부의 jumak을 사용해서 LAZY가 적용되도 추가 쿼리 나감 -> fetch join or EntityGraph사용해서 one query로 N+1 문제 해결
     }
 
     @Override
@@ -49,5 +50,8 @@ public class WaitingRepositoryImpl implements WaitingRepository {
         findWaiting.updatePhoneNum(phoneNum);
     }
 
-
+    @Override
+    public boolean isAccesibleByUser(Long waitingId, String userId) {
+        return jpaWaitingRepository.existsByIdAndUserId(waitingId, userId);
+    }
 }

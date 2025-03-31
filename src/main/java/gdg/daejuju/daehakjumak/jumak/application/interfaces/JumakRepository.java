@@ -8,4 +8,6 @@ public interface JumakRepository {
     Jumak findById(Long id);
 
     void updateJumakName(Long id, String jumakName);
+
+    boolean isAcessibleByUser(Long jumakId, String userId);
 }

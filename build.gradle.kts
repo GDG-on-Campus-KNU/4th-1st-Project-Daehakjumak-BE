@@ -40,11 +40,10 @@ dependencies {
 	runtimeOnly("io.jsonwebtoken:jjwt-gson:0.12.6")
 
 	//Oauth2
-
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 	implementation("org.springframework.boot:spring-boot-starter-security")
-
+    implementation("org.springframework.security:spring-security-config")
 
 	//lombok
 	compileOnly("org.projectlombok:lombok")
@@ -56,6 +55,9 @@ dependencies {
 	//DynamoDB
 	implementation("software.amazon.awssdk:dynamodb-enhanced:2.20.26")
 	implementation("software.amazon.awssdk:dynamodb:2.20.26")
+
+	//swagger
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0")
 
 	//test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")

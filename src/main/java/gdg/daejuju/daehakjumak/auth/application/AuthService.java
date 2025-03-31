@@ -4,7 +4,11 @@ import gdg.daejuju.daehakjumak.auth.application.dto.RefreshTokenRequestDto;
 import gdg.daejuju.daehakjumak.auth.application.dto.UserAccessTokenResponseDto;
 import gdg.daejuju.daehakjumak.auth.application.interfaces.UserAuthRepository;
 import gdg.daejuju.daehakjumak.auth.repository.domain.JwtTokenProvider;
+import gdg.daejuju.daehakjumak.user.application.interfaces.UserRepository;
+import gdg.daejuju.daehakjumak.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +19,7 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserAuthRepository userAuthRepository;
     private final KakaoAuthService kakaoAuthService;
+    private final UserDetailsService userDetailsService;
 
     @Transactional
     public UserAccessTokenResponseDto getNewToken(RefreshTokenRequestDto dto){
@@ -31,7 +36,8 @@ public class AuthService {
         }
 
         // 새 액세스 토큰 및 리프레시 토큰 생성
-        String newAccessToken = jwtTokenProvider.createToken(userId);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userId.toString()); //refreshToken에는 userId만 있어서 Token생성을 위해 DB에서 authorites 등 필요한 정보 조회
+        String newAccessToken = jwtTokenProvider.createToken(userDetails, userId);
         String newRefreshToken = jwtTokenProvider.createRefreshToken(userId);
 
         // userAuthEntity에 refreshToken 정보 업데이트
@@ -52,7 +58,6 @@ public class AuthService {
         userAuthRepository.logoutUser(userId); //dirty checking
 
     }
-
 
 }
 
