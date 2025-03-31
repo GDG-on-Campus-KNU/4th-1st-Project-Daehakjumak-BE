@@ -1,6 +1,7 @@
 package gdg.daejuju.daehakjumak.menu.application;
 
 import gdg.daejuju.daehakjumak.common.ui.Response;
+import gdg.daejuju.daehakjumak.image.application.ImageUploadService;
 import gdg.daejuju.daehakjumak.jumak.application.interfaces.JumakRepository;
 import gdg.daejuju.daehakjumak.jumak.domain.Jumak;
 import gdg.daejuju.daehakjumak.menu.application.interfaces.MenuRepository;
@@ -15,7 +16,9 @@ import gdg.daejuju.daehakjumak.menu.repository.entity.MenuEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,13 +28,16 @@ public class MenuService {
 
     private final MenuRepository menuRepository;
     private final JumakRepository jumakRepository;
+    private final ImageUploadService imageUploadService;
 
     // 메뉴 생성
     @Transactional
-    public Response<String> createMenu(CreateMenuRequestDto requestDto){
+    public Response<String> createMenu(CreateMenuRequestDto requestDto, MultipartFile file) throws IOException {
 
         Jumak jumak = jumakRepository.findById(requestDto.getJumak());
-        Menu menu = new Menu(null, requestDto.getName(), requestDto.getDescription(), requestDto.getPrice(), null, requestDto.getMenuType(), jumak);
+
+        String url = imageUploadService.uploadImage(file);
+        Menu menu = new Menu(null, requestDto.getName(), requestDto.getDescription(), requestDto.getPrice(), url, requestDto.getMenuType(), jumak);
 
         MenuEntity menuEntity = new MenuEntity(menu);
         menuRepository.save(menuEntity);
@@ -91,7 +97,8 @@ public class MenuService {
                         menuEntity.getName(),
                         menuEntity.getDescription(),
                         menuEntity.getPrice(),
-                        MenuType.valueOf(menuEntity.getMenuType())
+                        MenuType.valueOf(menuEntity.getMenuType()),
+                        menuEntity.getImageUrl()
                 ))
                 .collect(Collectors.toList());
 

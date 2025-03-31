@@ -1,5 +1,6 @@
 package gdg.daejuju.daehakjumak.menu.ui;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gdg.daejuju.daehakjumak.common.ui.Response;
 import gdg.daejuju.daehakjumak.menu.application.MenuService;
 import gdg.daejuju.daehakjumak.menu.domain.dto.request.CreateMenuRequestDto;
@@ -9,7 +10,9 @@ import gdg.daejuju.daehakjumak.menu.domain.dto.request.ModifyMenuPriceRequestDto
 import gdg.daejuju.daehakjumak.menu.domain.dto.response.GetAllMenuResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -20,8 +23,12 @@ public class MenuController {
     private final MenuService menuService;
 
     @PostMapping
-    public Response<String> createMenu(@RequestBody CreateMenuRequestDto requestDto){
-        return menuService.createMenu(requestDto);
+    public Response<String> createMenu(@RequestPart("data") String json, @RequestPart("image")MultipartFile file) throws IOException {
+        // form형식 데이터로 받아와서(image때문) 직점 Json 데이터로 수동 변환
+        ObjectMapper objectMapper = new ObjectMapper();
+        CreateMenuRequestDto requestDto = objectMapper.readValue(json, CreateMenuRequestDto.class);
+
+        return menuService.createMenu(requestDto, file);
     }
 
     @DeleteMapping("/{menuId}")
