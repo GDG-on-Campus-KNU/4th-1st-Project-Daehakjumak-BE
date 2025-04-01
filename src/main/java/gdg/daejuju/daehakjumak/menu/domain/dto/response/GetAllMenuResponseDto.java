@@ -11,4 +11,5 @@ public class GetAllMenuResponseDto {
     private String description;
     private int price;
     private MenuType menuType;
+    private String url;
 }
