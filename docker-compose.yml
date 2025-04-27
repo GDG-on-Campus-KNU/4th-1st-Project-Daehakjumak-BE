@@ -17,7 +17,7 @@ services:
     restart: always
 
   springboot-app:
-    image: ${DOCKERHUB_USER_NAME}/daehakjumak:${VERSION}#소문자만 사용가능, container로 만들 이미지(docker Registry에 저장한 내 springboot-app 이미지 사용)
+    image: ${DOCKERHUB_USER_NAME}/daehakjumak:${VERSION} #소문자만 사용가능, container로 만들 이미지(docker Registry에 저장한 내 springboot-app 이미지 사용)
     container_name: springboot-app
     ports:
       - "8080:8080"
