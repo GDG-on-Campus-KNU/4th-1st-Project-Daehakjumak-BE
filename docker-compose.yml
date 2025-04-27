@@ -1,0 +1,38 @@
+#Docker Compose version3부터는 알아서 version추가해줘서 version 생략함
+
+services:
+  mysql:
+    image: mysql:latest #container로 만들 이미지(MYSQL 공식 이미지 사용)
+    container_name: mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: daehakjumak #자동으로 create database daehakjumak 실행됨
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      TZ: Asia/Seoul
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: always
+
+  springboot-app:
+    image: ${DOCKERHUB_USER_NAME}/daehakjumak:latest #소문자만 사용가능, container로 만들 이미지(docker Registry에 저장한 내 springboot-app 이미지 사용)
+    container_name: springboot-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/daehakjumak
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      S3_BUCKET_NAME: ${S3_BUCKET_NAME}
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_KEY: ${AWS_SECRET_KEY}
+      SECRET_KEY: ${SECRET_KEY:-9a4f2c8d3b7a1e6f45c8a0b3f267d8b1d4e6f3c8a9d2b5f8e3a9c8b5f6v8a3d}
+      DB_HOST: mysql
+    depends_on:
+      - mysql
+    restart: always
+
+volumes:
+  mysql-data:

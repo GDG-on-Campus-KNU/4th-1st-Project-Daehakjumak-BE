@@ -5,7 +5,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/daehakjumak
+    url: jdbc:mysql://${DB_HOST:localhost}:3306/daehakjumak #docker에서는 container name(mysql:compose에 이렇게 지정함)으로 컨테이너간 소통 가능
     username: ${DB_USER}
     password: ${DB_PASSWORD}
 
