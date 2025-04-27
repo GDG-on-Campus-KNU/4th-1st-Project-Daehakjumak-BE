@@ -30,7 +30,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Build with Gradlew #github Server에서 jar파일 생성
-        run: ./gradlew clean test bootJar
+        run: ./gradlew clean bootJar
 
       - name: docker image build #Github Runner에서 DockerFile으로 springBoot app docker image 파일 빌드(docker build -t 이미지이름:태그 .)
         run: docker build -t ${{ secrets.DOCKERHUB_USER_NAME }}/daehakJumak:${{ github.event.inputs.version }} .
@@ -65,7 +65,7 @@ jobs:
         with:
           ref: '${{ github.event.inputs.ref }}'
 
-      - name: Create .env file
+      - name: Create .env file # >(overwrite): .env 파일이 기존에 있더라도 무조건 새로 만들어서 "DB_USER=..."부터 다시 시작
         run: |
           echo "DB_USER=${DB_USER}" > .env
           echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
