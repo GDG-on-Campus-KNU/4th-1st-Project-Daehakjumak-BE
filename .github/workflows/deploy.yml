@@ -49,12 +49,31 @@ jobs:
     runs-on: self-hosted #ec2사용
     needs:
       - build
+    env:
+      DB_USER: ${{ secrets.DB_USER }} #github repo [Settings]-[Secrets and Variables]에 정의한 변수 사용
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DOCKERHUB_USER_NAME: ${{ secrets.DOCKERHUB_USER_NAME }}
+      S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+      AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+      AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+
     #dockerhub repository에서 생성한 image pull 및 실행, 리소스 정리
     steps:
       - name: Checkout Source Code #docker-compose.yml포함 git repo 소스코드 최신화 (GitHub Actions의 self-hosted runner는 GitHub 저장소와 연결되어 있어서 actions/checkout@v4 액션을 사용 가능)
         uses: actions/checkout@v4
         with:
           ref: '${{ github.event.inputs.ref }}'
+
+      - name: Create .env file
+        run: |
+          echo "DB_USER=${DB_USER}" > .env
+          echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
+          echo "DOCKERHUB_USER_NAME=${DOCKERHUB_USER_NAME}" >> .env
+          echo "S3_BUCKET_NAME=${S3_BUCKET_NAME}" >> .env
+          echo "AWS_ACCESS_KEY=${AWS_ACCESS_KEY}" >> .env
+          echo "AWS_SECRET_KEY=${AWS_SECRET_KEY}" >> .env
+          echo "SECRET_KEY=${SECRET_KEY}" >> .env
 
       - name: docker pull #Docker Registry에서 이미지 받기
         run: docker pull ${{ secrets.DOCKERHUB_USER_NAME }}/daehakJumak:${{ github.event.inputs.version }}
