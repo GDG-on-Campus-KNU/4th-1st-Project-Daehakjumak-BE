@@ -76,7 +76,7 @@ jobs:
           echo "SECRET_KEY=${SECRET_KEY}" >> .env
 
       - name: docker pull #Docker Registry에서 이미지 받기
-        run: docker pull ${{ secrets.DOCKERHUB_USER_NAME }}/daehakJumak:${{ github.event.inputs.version }}
+        run: docker pull ${{ secrets.DOCKERHUB_USER_NAME }}/daehakjumak:${{ github.event.inputs.version }}
 
       - name: docker app service container stop
         run: docker-compose down #모든 실행중이 컨테이너 down, 특정 컨테이너만 종료하고 싶으면 stop사용
