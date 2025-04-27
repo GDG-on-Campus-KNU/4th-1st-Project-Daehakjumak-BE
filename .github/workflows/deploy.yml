@@ -33,7 +33,7 @@ jobs:
         run: ./gradlew clean bootJar
 
       - name: docker image build #Github Runner에서 DockerFile으로 springBoot app docker image 파일 빌드(docker build -t 이미지이름:태그 .)
-        run: docker build -t ${{ secrets.DOCKERHUB_USER_NAME }}/daehakJumak:${{ github.event.inputs.version }} .
+        run: docker build -t ${{ secrets.DOCKERHUB_USER_NAME }}/daehakjumak:${{ github.event.inputs.version }} . #Docker image의 repository 이름 다 소문자여야함
 
       - name: docker hub login #docker hub(registry)에 로그인 후, (github action runner에만 이미지 저장하지 않고 ec2 self hosted를 위해 Docker Registry에 저장하기 위함)
         uses: docker/login-action@v2
@@ -42,7 +42,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: docker image push #만든 docker image 파일 dockerhub내 repository로 push
-        run: docker push ${{ secrets.DOCKERHUB_USER_NAME }}/daehakJumak:${{ github.event.inputs.version }}
+        run: docker push ${{ secrets.DOCKERHUB_USER_NAME }}/daehakjumak:${{ github.event.inputs.version }}
 
 
   run-docker-iamge-on-ec2:
@@ -76,7 +76,7 @@ jobs:
           echo "SECRET_KEY=${SECRET_KEY}" >> .env
 
       - name: docker pull #Docker Registry에서 이미지 받기
-        run: docker pull ${{ secrets.DOCKERHUB_USER_NAME }}/daehakJumak:${{ github.event.inputs.version }}
+        run: docker pull ${{ secrets.DOCKERHUB_USER_NAME }}/daehakjumak:${{ github.event.inputs.version }}
 
       - name: docker app service container stop
         run: docker-compose down #모든 실행중이 컨테이너 down, 특정 컨테이너만 종료하고 싶으면 stop사용
