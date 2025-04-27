@@ -3,9 +3,9 @@ on:
   workflow_dispatch:
     inputs:
       ref: # 📦 체크아웃할 Git 브랜치나 태그
-        description: 'Git branch or tag to checkout (ex: master, release/v1.0)'
+        description: 'Git branch or tag to checkout (ex: main, release/v1.0)'
         required: true
-        default: master
+        default: main
       version: # 🐳 도커 이미지에 붙일 태그
         description: 'Docker Image Version Tag (ex: 1.0.0)'
         required: true
