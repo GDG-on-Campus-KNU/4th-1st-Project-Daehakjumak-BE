@@ -57,6 +57,7 @@ jobs:
       AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
       AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      VERSION: ${{ github.event.inputs.version }}
 
     #dockerhub repository에서 생성한 image pull 및 실행, 리소스 정리
     steps:
