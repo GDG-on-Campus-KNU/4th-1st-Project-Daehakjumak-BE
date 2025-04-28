@@ -10,12 +10,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/*@RestController
+@RestController
 public class SmsService {
     final DefaultMessageService messageService;
 
-    public SmsService(@Value("${API_KEY}") String apiKey,
-                      @Value("${API_SECRET_KEY}") String apiSecretKey) {
+    public SmsService(@Value("${SMS_API_KEY}") String apiKey,
+                      @Value("${SMS_API_SECRET_KEY}") String apiSecretKey) {
         // coolsms 시크릿키
         this.messageService = NurigoApp.INSTANCE.initialize(apiKey, apiSecretKey, "https://api.coolsms.co.kr");
     }
@@ -34,4 +34,4 @@ public class SmsService {
 
         return response;
     }
-}*/
+}
