@@ -57,6 +57,8 @@ jobs:
       AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
       AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      SMS_API_KEY: ${{ secrets.SMS_API_KEY }}
+      SMS_API_SECRET_KEY: ${{ secrets.SMS_API_SECRET_KEY }}
       VERSION: ${{ github.event.inputs.version }}
 
     #dockerhub repository에서 생성한 image pull 및 실행, 리소스 정리
@@ -75,6 +77,8 @@ jobs:
           echo "AWS_ACCESS_KEY=${AWS_ACCESS_KEY}" >> .env
           echo "AWS_SECRET_KEY=${AWS_SECRET_KEY}" >> .env
           echo "SECRET_KEY=${SECRET_KEY}" >> .env
+          echo "SMS_API_KEY=${SMS_API_KEY}" >> .env
+          echo "SMS_API_SECRET_KEY=${SMS_API_SECRET_KEY}" >> .env
 
       - name: docker pull #Docker Registry에서 이미지 받기
         run: docker pull ${{ secrets.DOCKERHUB_USER_NAME }}/daehakjumak:${{ github.event.inputs.version }}
