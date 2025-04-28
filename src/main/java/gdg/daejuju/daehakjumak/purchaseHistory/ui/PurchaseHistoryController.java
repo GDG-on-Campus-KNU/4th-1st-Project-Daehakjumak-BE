@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 public class PurchaseHistoryController {
     private final PurchaseHistoryService purchaseHistoryService;
 
-    @PreAuthorize("#userId == authentication.principal.username")
     @PostMapping
     public Response<String> createPurchaseHistory(@RequestBody CreatePurchaseHistoryReqDto dto){
         String id = purchaseHistoryService.savePurchaseHistory(dto);
