@@ -9,7 +9,9 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
@@ -18,7 +20,6 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 public class PurchaseHistoryEntity {
-
     private String id;
     private String menu;
     private int quantity;
@@ -26,13 +27,16 @@ public class PurchaseHistoryEntity {
     private Long jumakId;
     private LocalDateTime regDt;
 
+    // 한국 시간대 상수 정의
+    private static final ZoneId KOREA_ZONE = ZoneId.of("Asia/Seoul");
+
     public PurchaseHistoryEntity(String menu, int quantity, int price, Long jumakId) {
         this.id = UUID.randomUUID().toString();
         this.menu = menu;
         this.quantity = quantity;
         this.price = price;
         this.jumakId = jumakId;
-        this.regDt = LocalDateTime.now();
+        this.regDt = LocalDateTime.now(KOREA_ZONE);
     }
 
     @DynamoDbPartitionKey
@@ -42,12 +46,14 @@ public class PurchaseHistoryEntity {
 
     @DynamoDbSortKey
     @DynamoDbAttribute("regDt")
-    public Long getRegDt() { // Epoch Time으로 변환된 regDt 반환
-        return regDt.toEpochSecond(ZoneOffset.UTC);
+    public Long getRegDt() {
+        // 한국 시간대 기준으로 Epoch Time 변환
+        return regDt.atZone(KOREA_ZONE).toEpochSecond();
     }
 
-    public void setRegDt(Long epochTime) { // DynamoDB에서 불러올 때
-        this.regDt = LocalDateTime.ofEpochSecond(epochTime, 0, ZoneOffset.UTC);
+    public void setRegDt(Long epochTime) {
+        // DynamoDB에서 불러올 때 epoch 시간을 한국 시간대의 LocalDateTime으로 변환
+        this.regDt = LocalDateTime.ofInstant(Instant.ofEpochSecond(epochTime), KOREA_ZONE);
     }
 
     public LocalDateTime getOriginRegDt() {
