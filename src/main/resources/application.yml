@@ -29,6 +29,11 @@ aws:
   region:
     static: ap-northeast-2
 
+sms:
+  api:
+    key: ${SMS_API_KEY}
+    secret-key: ${SMS_API_SECRET_KEY}
+
 
 
 
