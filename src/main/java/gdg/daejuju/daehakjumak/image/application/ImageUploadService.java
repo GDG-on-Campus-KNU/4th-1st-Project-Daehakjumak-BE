@@ -30,7 +30,6 @@ public class ImageUploadService {
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(fileName)
-                .acl(ObjectCannedACL.PUBLIC_READ) // 읽기 권한 설정
                 .contentType(file.getContentType())
                 .build();
 
