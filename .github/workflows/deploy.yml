@@ -59,6 +59,7 @@ jobs:
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       SMS_API_KEY: ${{ secrets.SMS_API_KEY }}
       SMS_API_SECRET_KEY: ${{ secrets.SMS_API_SECRET_KEY }}
+      CLOUD_FRONT_DOMAIN: ${{ secrets.CLOUD_FRONT_DOMAIN }}
       VERSION: ${{ github.event.inputs.version }}
 
     #dockerhub repository에서 생성한 image pull 및 실행, 리소스 정리
@@ -79,6 +80,7 @@ jobs:
           echo "SECRET_KEY=${SECRET_KEY}" >> .env
           echo "SMS_API_KEY=${SMS_API_KEY}" >> .env
           echo "SMS_API_SECRET_KEY=${SMS_API_SECRET_KEY}" >> .env
+          echo "CLOUD_FRONT_DOMAIN=${CLOUD_FRONT_DOMAIN}" >> .env
 
       - name: docker pull #Docker Registry에서 이미지 받기
         run: docker pull ${{ secrets.DOCKERHUB_USER_NAME }}/daehakjumak:${{ github.event.inputs.version }}
