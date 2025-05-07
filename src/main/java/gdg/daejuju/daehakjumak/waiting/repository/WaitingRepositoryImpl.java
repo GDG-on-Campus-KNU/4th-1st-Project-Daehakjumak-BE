@@ -3,6 +3,7 @@ package gdg.daejuju.daehakjumak.waiting.repository;
 
 import gdg.daejuju.daehakjumak.waiting.application.interfaces.WaitingRepository;
 import gdg.daejuju.daehakjumak.waiting.domain.Waiting;
+import gdg.daejuju.daehakjumak.waiting.domain.WaitingStatus;
 import gdg.daejuju.daehakjumak.waiting.repository.entity.WaitingEntity;
 import gdg.daejuju.daehakjumak.waiting.repository.jpa.JpaWaitingRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,13 +29,8 @@ public class WaitingRepositoryImpl implements WaitingRepository {
     }
 
     @Override
-    public void delete(Long id) {
-        jpaWaitingRepository.deleteById(id);
-    }
-
-    @Override
     public List<Waiting> getWaitingList(Long jumakId) {
-        return jpaWaitingRepository.findAllByJumak_Id(jumakId).stream().map(WaitingEntity::toWaiting).toList();
+        return jpaWaitingRepository.findAllByJumak_Id(jumakId,WaitingStatus.WAITING).stream().map(WaitingEntity::toWaiting).toList();
         //toWaiting시 내부의 jumak을 사용해서 LAZY가 적용되도 추가 쿼리 나감 -> fetch join or EntityGraph사용해서 one query로 N+1 문제 해결
     }
 
@@ -53,5 +49,21 @@ public class WaitingRepositoryImpl implements WaitingRepository {
     @Override
     public boolean isAccesibleByUser(Long waitingId, String userId) {
         return jpaWaitingRepository.existsByIdAndUserId(waitingId, userId);
+    }
+
+    @Override
+    public int getWaitingCount(Long jumakId) {
+        return jpaWaitingRepository.getCountByJumak_Id(jumakId, WaitingStatus.WAITING);
+    }
+
+    @Override
+    public int getMaxWaitingNumber(Long jumakId) {
+        return jpaWaitingRepository.getMaxWaitingNumber(jumakId);
+    }
+
+    @Override
+    public void completeWaitingStatus(Long waitingId) {
+        jpaWaitingRepository.findById(waitingId).ifPresent(WaitingEntity::complete); //dirty checking
+        /*jpaWaitingRepository.updateWaitingStatus(waitingId, WaitingStatus.COMPLETED);*/
     }
 }
