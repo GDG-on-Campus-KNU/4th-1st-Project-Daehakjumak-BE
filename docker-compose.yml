@@ -32,6 +32,7 @@ services:
       DB_HOST: mysql
       SMS_API_KEY: ${SMS_API_KEY}
       SMS_API_SECRET_KEY: ${SMS_API_SECRET_KEY}
+      CLOUD_FRONT_DOMAIN: ${CLOUD_FRONT_DOMAIN}
     depends_on:
       - mysql
     restart: always

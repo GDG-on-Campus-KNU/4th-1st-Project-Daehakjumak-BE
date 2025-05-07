@@ -28,6 +28,8 @@ aws:
     secretKey: ${AWS_SECRET_KEY}
   region:
     static: ap-northeast-2
+  cloudfront:
+    domain: ${CLOUD_FRONT_DOMAIN}
 
 sms:
   api:

@@ -3,6 +3,7 @@ package gdg.daejuju.daehakjumak.waiting.ui;
 import gdg.daejuju.daehakjumak.common.ui.Response;
 import gdg.daejuju.daehakjumak.waiting.application.WaitingService;
 import gdg.daejuju.daehakjumak.waiting.application.dto.CreateWaitingRequestDto;
+import gdg.daejuju.daehakjumak.waiting.application.dto.GetWaitingCountResDto;
 import gdg.daejuju.daehakjumak.waiting.application.dto.GetWaitingResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,9 +39,9 @@ public class WaitingController {
     }
 
     @PreAuthorize("hasPermission(#waitingId, 'Waiting', null)")
-    @DeleteMapping("/{waitingId}")
-    public Response<Void> deleteWaiting(@PathVariable("waitingId") Long waitingId) {
-        waitingService.deleteWaiting(waitingId);
+    @PostMapping("/{waitingId}/complete")
+    public Response<Void> completeWaiting(@PathVariable("waitingId") Long waitingId) {
+        waitingService.completeWaiting(waitingId);
         return Response.ok(null);
     }
 
@@ -49,6 +50,13 @@ public class WaitingController {
     public Response<List<GetWaitingResponseDto>> getWaitingList(@RequestParam("jumakId") Long jumakId) {
         List<GetWaitingResponseDto> waitingList = waitingService.getWaitingList(jumakId);
         return Response.ok(waitingList);
+    }
+
+    @PreAuthorize("hasPermission(#jumakId, 'Jumak', null)")
+    @GetMapping("/count")
+    public Response<GetWaitingCountResDto> getWaitingCount(@RequestParam("jumakId") Long jumakId) {
+        int waitingCount = waitingService.getWaitingCount(jumakId);
+        return Response.ok(new GetWaitingCountResDto(waitingCount));
     }
 
 
