@@ -15,4 +15,8 @@ public interface WaitingRepository {
     void updatePhoneNum(Long id, String phoneNum);
 
     boolean isAccesibleByUser(Long waitingId, String userId);
+
+    int getWaitingCount(Long jumakId);
+
+    int getMaxWaitingNumber(Long jumakId);
 }

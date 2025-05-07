@@ -20,16 +20,17 @@ public class WaitingEntity {
     private Long id;
     private int nop;
     private String phoneNum;
+    private int waitingNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="jumakId", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private JumakEntity jumak;
 
     public WaitingEntity(Waiting waiting){
-        this.id = waiting.getId();
         this.nop =waiting.getNop();
         this.phoneNum = waiting.getPhoneNum();
         this.jumak = new JumakEntity(waiting.getJumak());
+        this.waitingNumber = waiting.getWaitingNumber();
     }
 
     public Waiting toWaiting(){

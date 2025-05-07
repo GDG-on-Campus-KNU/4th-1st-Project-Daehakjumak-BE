@@ -54,4 +54,14 @@ public class WaitingRepositoryImpl implements WaitingRepository {
     public boolean isAccesibleByUser(Long waitingId, String userId) {
         return jpaWaitingRepository.existsByIdAndUserId(waitingId, userId);
     }
+
+    @Override
+    public int getWaitingCount(Long jumakId) {
+        return jpaWaitingRepository.getCountByJumak_Id(jumakId);
+    }
+
+    @Override
+    public int getMaxWaitingNumber(Long jumakId) {
+        return jpaWaitingRepository.getMaxWaitingNumber(jumakId);
+    }
 }

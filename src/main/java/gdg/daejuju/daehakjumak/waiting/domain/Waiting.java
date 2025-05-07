@@ -11,9 +11,11 @@ public class Waiting {
     private int nop;
     private String phoneNum;
     private Jumak jumak;
+    private int waitingNumber;
 
-    public Waiting(Long id, int nop, String phoneNum, Jumak jumak) {
+    public Waiting(Long id, int waitingNumber, int nop, String phoneNum,Jumak jumak) {
         this.id = id;
+        this.waitingNumber = waitingNumber;
         this.nop = nop;
         this.phoneNum = phoneNum;
         this.jumak = jumak;

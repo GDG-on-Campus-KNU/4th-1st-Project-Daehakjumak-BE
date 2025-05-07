@@ -33,7 +33,8 @@ public class WaitingService {
     @Transactional
     public Long createWaiting(CreateWaitingRequestDto dto) {
         Jumak jumak = jumakRepository.findById(dto.jumakId());
-        return waitingRepository.save(new Waiting(null,dto.nop(),dto.phoneNum(),jumak));
+        int maxWaitingNumber = waitingRepository.getMaxWaitingNumber(dto.jumakId());
+        return waitingRepository.save(new Waiting(null,maxWaitingNumber+1,dto.nop(),dto.phoneNum(),jumak));
     }
 
     @Transactional
@@ -43,6 +44,10 @@ public class WaitingService {
 
     public List<GetWaitingResponseDto> getWaitingList(Long jumakId) {
         return waitingRepository.getWaitingList(jumakId).stream().map(GetWaitingResponseDto::new).toList();
+    }
+
+    public int getWaitingCount(Long jumakId){
+        return waitingRepository.getWaitingCount(jumakId);
     }
 
 }

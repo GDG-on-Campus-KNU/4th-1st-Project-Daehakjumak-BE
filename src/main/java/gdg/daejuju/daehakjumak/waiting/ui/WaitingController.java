@@ -51,6 +51,13 @@ public class WaitingController {
         return Response.ok(waitingList);
     }
 
+    @PreAuthorize("hasPermission(#jumakId, 'Jumak', null)")
+    @GetMapping
+    public Response<Integer> getWaitingCount(@RequestParam("jumakId") Long jumakId) {
+        int waitingCount = waitingService.getWaitingCount(jumakId);
+        return Response.ok(waitingCount);
+    }
+
 
 
 }
