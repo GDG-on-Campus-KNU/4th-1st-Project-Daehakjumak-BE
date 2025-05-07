@@ -1,5 +1,7 @@
 package gdg.daejuju.daehakjumak.jumak.repository;
 
+import gdg.daejuju.daehakjumak.common.domain.exception.ErrorCode;
+import gdg.daejuju.daehakjumak.common.domain.exception.NotFoundException;
 import gdg.daejuju.daehakjumak.jumak.application.interfaces.JumakRepository;
 import gdg.daejuju.daehakjumak.jumak.domain.Jumak;
 import gdg.daejuju.daehakjumak.jumak.repository.entity.JumakEntity;
@@ -21,8 +23,8 @@ public class JumakRepositoryImpl implements JumakRepository {
     }
 
     @Override
-    public Jumak findById(Long id) {
-        return jpaJumakRepository.findById(id).map(JumakEntity::toJumak).orElseThrow(() -> new IllegalArgumentException("Jumak not found"));
+    public Jumak findById(Long id) throws NotFoundException {
+        return jpaJumakRepository.findById(id).map(JumakEntity::toJumak).orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND));
     }
 
     @Override

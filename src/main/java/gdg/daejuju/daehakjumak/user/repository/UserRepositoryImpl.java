@@ -1,5 +1,7 @@
 package gdg.daejuju.daehakjumak.user.repository;
 
+import gdg.daejuju.daehakjumak.common.domain.exception.ErrorCode;
+import gdg.daejuju.daehakjumak.common.domain.exception.NotFoundException;
 import gdg.daejuju.daehakjumak.user.application.interfaces.UserRepository;
 import gdg.daejuju.daehakjumak.user.domain.User;
 import gdg.daejuju.daehakjumak.user.repository.entity.UserEntity;
@@ -22,7 +24,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findById(Long userId) {
-        return jpaUserRepository.findById(userId).map(UserEntity::toUser).orElseThrow(()->new IllegalArgumentException("User not found"));
+    public User findById(Long userId) throws NotFoundException {
+        return jpaUserRepository.findById(userId).map(UserEntity::toUser).orElseThrow(()->new NotFoundException(ErrorCode.NOT_FOUND));
     }
 }
