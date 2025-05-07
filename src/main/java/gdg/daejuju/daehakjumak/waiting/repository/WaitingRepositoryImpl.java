@@ -26,7 +26,7 @@ public class WaitingRepositoryImpl implements WaitingRepository {
     }
 
     @Override
-    public WaitingEntity findById(Long id) {
+    public WaitingEntity findById(Long id) throws NotFoundException {
         return jpaWaitingRepository.findById(id).orElseThrow(()->new NotFoundException(ErrorCode.NOT_FOUND));
     }
 

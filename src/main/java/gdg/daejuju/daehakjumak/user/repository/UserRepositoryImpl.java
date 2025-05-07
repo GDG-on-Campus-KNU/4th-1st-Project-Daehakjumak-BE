@@ -24,7 +24,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findById(Long userId) {
+    public User findById(Long userId) throws NotFoundException {
         return jpaUserRepository.findById(userId).map(UserEntity::toUser).orElseThrow(()->new NotFoundException(ErrorCode.NOT_FOUND));
     }
 }

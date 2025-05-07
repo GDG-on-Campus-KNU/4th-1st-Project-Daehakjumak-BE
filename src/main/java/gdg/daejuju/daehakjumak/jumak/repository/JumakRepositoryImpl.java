@@ -23,7 +23,7 @@ public class JumakRepositoryImpl implements JumakRepository {
     }
 
     @Override
-    public Jumak findById(Long id) {
+    public Jumak findById(Long id) throws NotFoundException {
         return jpaJumakRepository.findById(id).map(JumakEntity::toJumak).orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND));
     }
 
