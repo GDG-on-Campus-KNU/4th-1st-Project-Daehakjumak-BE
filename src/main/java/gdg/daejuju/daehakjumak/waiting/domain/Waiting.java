@@ -4,7 +4,6 @@ import gdg.daejuju.daehakjumak.jumak.domain.Jumak;
 import lombok.Builder;
 import lombok.Getter;
 
-@Builder
 @Getter
 public class Waiting {
     private Long id;
@@ -12,12 +11,15 @@ public class Waiting {
     private String phoneNum;
     private Jumak jumak;
     private int waitingNumber;
+    private WaitingStatus status;
 
-    public Waiting(Long id, int waitingNumber, int nop, String phoneNum,Jumak jumak) {
+    @Builder
+    public Waiting(Long id, int waitingNumber, int nop, String phoneNum, Jumak jumak) {
         this.id = id;
         this.waitingNumber = waitingNumber;
         this.nop = nop;
         this.phoneNum = phoneNum;
         this.jumak = jumak;
+        this.status =WaitingStatus.WAITING;
     }
 }

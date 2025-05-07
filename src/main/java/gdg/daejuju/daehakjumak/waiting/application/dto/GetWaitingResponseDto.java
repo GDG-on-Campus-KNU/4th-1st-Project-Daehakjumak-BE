@@ -8,11 +8,12 @@ public class GetWaitingResponseDto {
     Long id;
     int nop;
     String phoneNum;
-
+    int waitingNumber;
     public GetWaitingResponseDto(Waiting waiting) {
         this.id = waiting.getId();
         this.nop = waiting.getNop();
         this.phoneNum = waiting.getPhoneNum();
+        this.waitingNumber = waiting.getWaitingNumber();
     }
 
 }

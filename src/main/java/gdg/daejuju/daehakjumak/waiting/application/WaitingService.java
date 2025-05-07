@@ -38,8 +38,8 @@ public class WaitingService {
     }
 
     @Transactional
-    public void deleteWaiting(Long waitingId) {
-        waitingRepository.delete(waitingId);
+    public void completeWaiting(Long waitingId) {
+        waitingRepository.completeWaitingStatus(waitingId);
     }
 
     public List<GetWaitingResponseDto> getWaitingList(Long jumakId) {
