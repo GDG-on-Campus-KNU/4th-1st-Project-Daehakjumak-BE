@@ -1,6 +1,8 @@
 package gdg.daejuju.daehakjumak.waiting.repository;
 
 
+import gdg.daejuju.daehakjumak.common.domain.exception.ErrorCode;
+import gdg.daejuju.daehakjumak.common.domain.exception.NotFoundException;
 import gdg.daejuju.daehakjumak.waiting.application.interfaces.WaitingRepository;
 import gdg.daejuju.daehakjumak.waiting.domain.Waiting;
 import gdg.daejuju.daehakjumak.waiting.domain.WaitingStatus;
@@ -25,7 +27,7 @@ public class WaitingRepositoryImpl implements WaitingRepository {
 
     @Override
     public WaitingEntity findById(Long id) {
-        return jpaWaitingRepository.findById(id).orElseThrow();
+        return jpaWaitingRepository.findById(id).orElseThrow(()->new NotFoundException(ErrorCode.NOT_FOUND));
     }
 
     @Override
